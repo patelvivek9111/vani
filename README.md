@@ -1,15 +1,6 @@
 # Vāṇī - Bhagavad Gita Widget App
 
-<div align="center">
 
-**Daily wisdom from the Bhagavad Gita, beautifully delivered to your Home and Lock Screen**
-
-[![iOS](https://img.shields.io/badge/iOS-17.0+-blue.svg)](https://www.apple.com/ios/)
-[![Swift](https://img.shields.io/badge/Swift-5.0-orange.svg)](https://swift.org/)
-[![SwiftUI](https://img.shields.io/badge/SwiftUI-5.0-green.svg)](https://developer.apple.com/xcode/swiftui/)
-[![WidgetKit](https://img.shields.io/badge/WidgetKit-2.0-purple.svg)](https://developer.apple.com/widgets/)
-
-</div>
 
 ---
 
@@ -129,26 +120,6 @@ Share verses beautifully with 5 different template designs:
 - `VaniWidget` - Widget implementation
 - `VaniTimelineProvider` - Widget timeline management
 - Small, Medium, and Large widget views
-
----
-
-## 📦 Installation
-
-### **Requirements**
-- iOS 17.0 or later
-- Xcode 15.0 or later
-- Swift 5.9 or later
-
-### **Setup**
-1. Clone the repository
-2. Open `Vani.xcodeproj` in Xcode
-3. Configure your Apple Developer Team
-4. Build and run on simulator or device
-
-### **App Group Configuration**
-The app uses an App Group (`group.com.vani.shared`) for sharing data between the main app and widget extension. Ensure this is configured in:
-- Main app target capabilities
-- Widget extension target capabilities
 
 ---
 
