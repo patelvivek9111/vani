@@ -83,10 +83,20 @@ struct ShootingStarView: View {
                 : screenWidth + 100 - (travelDistance * progress)
             let yPos: CGFloat = startY + (dropDistance * progress)
             
-            // Rotation angle for the tail (pointing back along travel path)
-            let angle: Double = fromLeft
-                ? atan2(Double(dropDistance), Double(travelDistance)) * 180 / .pi
-                : 180 - atan2(Double(dropDistance), Double(travelDistance)) * 180 / .pi
+            // Calculate angle based on travel direction
+            // For fromLeft: traveling right and down (positive angle)
+            // For fromRight: traveling left and down (negative angle)
+            let baseAngle = atan2(Double(dropDistance), Double(travelDistance)) * 180 / .pi
+            let angle: Double = fromLeft ? baseAngle : -baseAngle
+            
+            // Gradient direction: head (bright) to tail (fade)
+            // For fromLeft: head is on right (trailing), tail on left (leading)
+            // For fromRight: head is on left (leading), tail on right (trailing)
+            let gradientStart: UnitPoint = fromLeft ? .trailing : .leading
+            let gradientEnd: UnitPoint = fromLeft ? .leading : .trailing
+            
+            // Head offset: always at the front of travel direction
+            let headOffset: CGFloat = fromLeft ? (tailLength * 0.4) : -(tailLength * 0.4)
             
             ZStack {
                 // Outer glow layer
@@ -94,8 +104,8 @@ struct ShootingStarView: View {
                     .fill(
                         LinearGradient(
                             colors: [Color.white.opacity(0.6), Color.white.opacity(0.1), Color.clear],
-                            startPoint: .trailing,
-                            endPoint: .leading
+                            startPoint: gradientStart,
+                            endPoint: gradientEnd
                         )
                     )
                     .frame(width: tailLength, height: 6)
@@ -106,8 +116,8 @@ struct ShootingStarView: View {
                     .fill(
                         LinearGradient(
                             colors: [Color.white.opacity(0.8), Color.white.opacity(0.3), Color.clear],
-                            startPoint: .trailing,
-                            endPoint: .leading
+                            startPoint: gradientStart,
+                            endPoint: gradientEnd
                         )
                     )
                     .frame(width: tailLength * 0.9, height: 4)
@@ -118,8 +128,8 @@ struct ShootingStarView: View {
                     .fill(
                         LinearGradient(
                             colors: [Color.white, Color.white.opacity(0.6), Color.clear],
-                            startPoint: .trailing,
-                            endPoint: .leading
+                            startPoint: gradientStart,
+                            endPoint: gradientEnd
                         )
                     )
                     .frame(width: tailLength * 0.8, height: 2)
@@ -129,12 +139,12 @@ struct ShootingStarView: View {
                     .fill(Color.white)
                     .frame(width: 4, height: 4)
                     .blur(radius: 1)
-                    .offset(x: tailLength * 0.4)
+                    .offset(x: headOffset)
                 
                 Circle()
                     .fill(Color.white)
                     .frame(width: 3, height: 3)
-                    .offset(x: tailLength * 0.4)
+                    .offset(x: headOffset)
             }
             .rotationEffect(.degrees(angle))
             .position(x: xPos, y: yPos)

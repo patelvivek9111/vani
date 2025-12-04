@@ -489,7 +489,7 @@ struct SettingsView: View {
     }
     
     private func refreshWidgets() {
-        WidgetHelper.reloadAllTimelines()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
 
@@ -1092,7 +1092,7 @@ struct DisplayModeView: View {
     }
     
     private func refreshWidgets() {
-        WidgetHelper.reloadAllTimelines()
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
 
