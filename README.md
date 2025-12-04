@@ -276,8 +276,6 @@ For issues, questions, or feedback, please contact through the app's support cha
 - Favorite verses are saved locally
 - No data is ever transmitted to us or any third parties
 
-### Full Privacy Policy:
-For complete details, please read our [Privacy Policy](https://patelvivek9111.github.io/vani/privacy-policy.html).
 
 ---
 
