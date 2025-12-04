@@ -259,6 +259,28 @@ For issues, questions, or feedback, please contact through the app's support cha
 
 ---
 
+## 🔒 Privacy Policy
+
+**Vāṇī** is committed to protecting your privacy. We do not collect, store, or transmit any personal information from your device.
+
+### Key Privacy Points:
+- ✅ **No Data Collection** - We do not collect any personal information
+- ✅ **Local Storage Only** - All data (preferences, favorites, settings) is stored locally on your device
+- ✅ **No Tracking** - No analytics, no tracking, no third-party services
+- ✅ **No Server Communication** - The app operates entirely offline
+- ✅ **Widget Privacy** - Widget extension only accesses local data, never transmits anything
+
+### Your Data:
+- All app preferences and settings are stored locally using iOS UserDefaults
+- Your name (if entered for personalization) is stored only on your device
+- Favorite verses are saved locally
+- No data is ever transmitted to us or any third parties
+
+### Full Privacy Policy:
+For complete details, please read our [Privacy Policy](https://patelvivek9111.github.io/vani/privacy-policy.html).
+
+---
+
 <div align="center">
 
 **Made with ❤️ for spiritual seekers**
