@@ -478,7 +478,7 @@ struct OnboardingView: View {
                 
                 // Add Widget Button
                 Button(action: {
-                    WidgetCenter.shared.reloadAllTimelines()
+                    WidgetHelper.reloadAllTimelines()
                     showWidgetInstructions = true
                 }) {
                     HStack(spacing: 12) {

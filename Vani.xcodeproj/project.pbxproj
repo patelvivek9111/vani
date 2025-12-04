@@ -382,7 +382,7 @@
 				CODE_SIGN_ENTITLEMENTS = Vani/Vani.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = J3X99277Q4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vāṇī";
@@ -413,7 +413,7 @@
 				CODE_SIGN_ENTITLEMENTS = Vani/Vani.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = J3X99277Q4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vāṇī";
@@ -444,7 +444,7 @@
 				CODE_SIGN_ENTITLEMENTS = VaniWidget/VaniWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = J3X99277Q4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VaniWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vāṇī Widget";
@@ -472,7 +472,7 @@
 				CODE_SIGN_ENTITLEMENTS = VaniWidget/VaniWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = J3X99277Q4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VaniWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Vāṇī Widget";

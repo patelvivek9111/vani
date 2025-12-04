@@ -7,6 +7,7 @@
 
 import WidgetKit
 import SwiftUI
+import Foundation
 
 // MARK: - Timeline Entry
 
@@ -62,15 +63,23 @@ struct VaniTimelineProvider: TimelineProvider {
     }
     
     func getSnapshot(in context: Context, completion: @escaping (VaniWidgetEntry) -> Void) {
-        let entry = createEntry(for: Date())
-        completion(entry)
+        // getSnapshot must be fast - use placeholder for previews, real data for widget gallery
+        if context.isPreview {
+            completion(VaniWidgetEntry.placeholder)
+        } else {
+            // For widget gallery, use real data but ensure it's fast
+            let entry = createEntry(for: Date())
+            completion(entry)
+        }
     }
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<VaniWidgetEntry>) -> Void) {
         let currentDate = Date()
-        let defaults = AppConstants.sharedUserDefaults ?? .standard
         
-        // Read schedule to determine refresh policy
+        // Safely get UserDefaults - ensure we always have a valid instance
+        let defaults = AppConstants.sharedUserDefaults ?? UserDefaults.standard
+        
+        // Read schedule to determine refresh policy with safe fallback
         let schedule: VerseSchedule = {
             guard let raw = defaults.string(forKey: AppConstants.UserDefaultsKeys.verseSchedule),
                   let s = VerseSchedule(rawValue: raw) else { return .oncePerDay }
@@ -78,25 +87,45 @@ struct VaniTimelineProvider: TimelineProvider {
         }()
         
         // Create entries based on schedule
+        // Use autoreleasepool to manage memory efficiently in widget extension
         var entries: [VaniWidgetEntry] = []
         
-        // Current entry
-        let currentEntry = createEntry(for: currentDate)
-        entries.append(currentEntry)
+        autoreleasepool {
+            // Current entry - createEntry handles errors internally
+            let currentEntry = createEntry(for: currentDate)
+            entries.append(currentEntry)
+            
+            // Next scheduled entry
+            let nextTime = schedule.nextScheduledTime(after: currentDate)
+            let nextEntry = createEntry(for: nextTime)
+            entries.append(nextEntry)
+        }
         
-        // Next scheduled entry
-        let nextTime = schedule.nextScheduledTime(after: currentDate)
-        let nextEntry = createEntry(for: nextTime)
-        entries.append(nextEntry)
+        // Ensure we always have at least one entry
+        if entries.isEmpty {
+            entries.append(VaniWidgetEntry(
+                date: currentDate,
+                verse: nil,
+                mediumMode: .essence,
+                largeTop: .sanskrit,
+                largeBottom: .essence,
+                theme: .pureBlack,
+                hasError: true
+            ))
+        }
         
         // Set refresh policy to next scheduled time
+        let nextTime = schedule.nextScheduledTime(after: currentDate)
         let timeline = Timeline(entries: entries, policy: .after(nextTime))
+        
+        // Always call completion to prevent widget extension from hanging
         completion(timeline)
     }
     
     private func createEntry(for date: Date) -> VaniWidgetEntry {
         // Read fresh settings directly from shared UserDefaults (not cached singleton)
-        let defaults = AppConstants.sharedUserDefaults ?? .standard
+        // Use safe fallback to standard UserDefaults if shared is unavailable
+        let defaults = AppConstants.sharedUserDefaults ?? UserDefaults.standard
         
         // Check if onboarding is complete - if not, show onboarding message
         let hasCompletedOnboarding = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
@@ -150,74 +179,81 @@ struct VaniTimelineProvider: TimelineProvider {
         let currentVerseId = defaults.string(forKey: AppConstants.UserDefaultsKeys.currentVerseId)
         
         // Load verses from repository
+        // Use autoreleasepool to manage memory efficiently in widget extension
         let repository = BundleGitaRepository()
         
-        do {
-            let data = try repository.loadData()
-            
-            // Validate data integrity
-            guard !data.allVerses.isEmpty else {
-                return VaniWidgetEntry(
-                    date: date,
-                    verse: nil,
-                    mediumMode: mediumMode,
-                    largeTop: largeTop,
-                    largeBottom: largeBottom,
-                    theme: theme,
-                    hasError: true
-                )
-            }
-            
-            let krishnaVerses = repository.getKrishnaVerses(from: data)
-            
-            // Validate we have Krishna verses
-            guard !krishnaVerses.isEmpty else {
-                return VaniWidgetEntry(
-                    date: date,
-                    verse: nil,
-                    mediumMode: mediumMode,
-                    largeTop: largeTop,
-                    largeBottom: largeBottom,
-                    theme: theme,
-                    hasError: true
-                )
-            }
-            
-            // Use the synced verse from the app (set by VerseRotationManager)
-            // Widget always displays what the app has set
-            let verse: Verse?
-            if let currentId = currentVerseId,
-               let savedVerse = VerseSelector.findVerse(byId: currentId, from: krishnaVerses) {
-                verse = savedVerse
-            } else {
-                // Fallback: use rotation manager to get current verse
-                let rotationManager = VerseRotationManager.forWidget()
-                let rotationVerse = rotationManager.getCurrentVerse(from: krishnaVerses, for: date)
+        // Wrap in autoreleasepool to help with memory management
+        return autoreleasepool {
+            do {
+                let data = try repository.loadData()
                 
-                // Final fallback: use first verse if rotation manager fails
-                verse = rotationVerse ?? krishnaVerses.first
+                // Validate data integrity
+                guard !data.allVerses.isEmpty else {
+                    return VaniWidgetEntry(
+                        date: date,
+                        verse: nil,
+                        mediumMode: mediumMode,
+                        largeTop: largeTop,
+                        largeBottom: largeBottom,
+                        theme: theme,
+                        hasError: true
+                    )
+                }
+                
+                let krishnaVerses = repository.getKrishnaVerses(from: data)
+                
+                // Validate we have Krishna verses
+                guard !krishnaVerses.isEmpty else {
+                    return VaniWidgetEntry(
+                        date: date,
+                        verse: nil,
+                        mediumMode: mediumMode,
+                        largeTop: largeTop,
+                        largeBottom: largeBottom,
+                        theme: theme,
+                        hasError: true
+                    )
+                }
+                
+                // Use the synced verse from the app (set by VerseRotationManager)
+                // Widget always displays what the app has set
+                let verse: Verse?
+                if let currentId = currentVerseId,
+                   let savedVerse = VerseSelector.findVerse(byId: currentId, from: krishnaVerses) {
+                    verse = savedVerse
+                } else {
+                    // Fallback: use rotation manager to get current verse
+                    // Use autoreleasepool for rotation manager as well
+                    let verseResult = autoreleasepool {
+                        let rotationManager = VerseRotationManager.forWidget()
+                        return rotationManager.getCurrentVerse(from: krishnaVerses, for: date)
+                    }
+                    
+                    // Final fallback: use first verse if rotation manager fails
+                    verse = verseResult ?? krishnaVerses.first
+                }
+                
+                return VaniWidgetEntry(
+                    date: date,
+                    verse: verse,
+                    mediumMode: mediumMode,
+                    largeTop: largeTop,
+                    largeBottom: largeBottom,
+                    theme: theme,
+                    hasError: false
+                )
+            } catch {
+                // Handle all errors gracefully - widget extensions must never crash
+                return VaniWidgetEntry(
+                    date: date,
+                    verse: nil,
+                    mediumMode: mediumMode,
+                    largeTop: largeTop,
+                    largeBottom: largeBottom,
+                    theme: theme,
+                    hasError: true
+                )
             }
-            
-            return VaniWidgetEntry(
-                date: date,
-                verse: verse,
-                mediumMode: mediumMode,
-                largeTop: largeTop,
-                largeBottom: largeBottom,
-                theme: theme,
-                hasError: false
-            )
-        } catch {
-            // Handle all errors gracefully
-            return VaniWidgetEntry(
-                date: date,
-                verse: nil,
-                mediumMode: mediumMode,
-                largeTop: largeTop,
-                largeBottom: largeBottom,
-                theme: theme,
-                hasError: true
-            )
         }
     }
 }

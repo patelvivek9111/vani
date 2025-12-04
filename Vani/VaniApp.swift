@@ -43,7 +43,7 @@ struct VaniApp: App {
                         }
                         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
                             // Refresh widget when app goes to background
-                            WidgetCenter.shared.reloadAllTimelines()
+                            WidgetHelper.reloadAllTimelines()
                         }
                         .onAppear {
                             // Schedule notifications based on saved settings

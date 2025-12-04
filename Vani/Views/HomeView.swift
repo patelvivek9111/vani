@@ -724,7 +724,7 @@ struct HomeView: View {
             
             // Sync to settings for widget access
             settings.currentVerseId = verse.id
-            WidgetCenter.shared.reloadAllTimelines()
+            WidgetHelper.reloadAllTimelines()
             
             isLoading = false
         } catch let error as GitaRepositoryError {
@@ -765,7 +765,7 @@ struct HomeView: View {
             
             if let verse = currentVerse {
                 settings.currentVerseId = verse.id
-                WidgetCenter.shared.reloadAllTimelines()
+                WidgetHelper.reloadAllTimelines()
             }
         }
         
