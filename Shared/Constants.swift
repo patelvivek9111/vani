@@ -56,6 +56,7 @@ enum AppConstants {
         
         // Onboarding
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
+        static let hasShownFirstVerse = "hasShownFirstVerse"
         
         // Share template
         static let shareTemplate = "shareTemplate"

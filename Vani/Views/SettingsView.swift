@@ -278,9 +278,9 @@ struct SettingsView: View {
                     get: { settings.personalizationEnabled && !settings.userName.isEmpty },
                     set: { newValue in
                         settings.personalizationEnabled = newValue
-                        // If disabling personalization and currently in personalized mode, switch to essence
+                        // If disabling personalization and currently in personalized mode, switch to translation
                         if !newValue && settings.homeDisplayMode == .personalized {
-                            settings.homeDisplayMode = .essence
+                            settings.homeDisplayMode = .translation
                         }
                     }
                 ))

@@ -84,8 +84,17 @@ struct VerseRotationState: Codable, Equatable {
     }
     
     /// Resets the rotation with new verse IDs (re-shuffles)
-    mutating func reset(with verseIds: [String]) {
-        self.shuffledVerseIds = verseIds.shuffled()
+    /// - Parameter firstVerseId: Optional verse ID to place first in the rotation
+    mutating func reset(with verseIds: [String], firstVerseId: String? = nil) {
+        var newShuffledIds = verseIds.shuffled()
+        
+        // If a first verse is specified, ensure it's first
+        if let firstId = firstVerseId, let index = newShuffledIds.firstIndex(of: firstId) {
+            newShuffledIds.remove(at: index)
+            newShuffledIds.insert(firstId, at: 0)
+        }
+        
+        self.shuffledVerseIds = newShuffledIds
         self.currentIndex = 0
         self.createdAt = Date()
         self.lastAdvancedAt = Date()

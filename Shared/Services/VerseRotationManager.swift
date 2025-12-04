@@ -102,6 +102,22 @@ final class VerseRotationManager: ObservableObject {
         
         let eligibleIds = eligibleVerses.map { $0.id }
         
+        // Check if this is the first time after onboarding - show 15.5 immediately
+        let hasCompletedOnboarding = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
+        let hasShownFirstVerse = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
+        
+        if hasCompletedOnboarding && !hasShownFirstVerse && eligibleIds.contains("15.5") {
+            // Force reset with 15.5 as first
+            rotationState.reset(with: eligibleIds, firstVerseId: "15.5")
+            saveRotationState()
+            // Mark as shown
+            defaults.set(true, forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
+            if let verse15_5 = eligibleVerses.first(where: { $0.id == "15.5" }) {
+                saveCurrentVerseId("15.5")
+                return verse15_5
+            }
+        }
+        
         // Ensure rotation is initialized/valid for current eligible verses
         ensureRotationValid(for: eligibleIds)
         
@@ -116,7 +132,7 @@ final class VerseRotationManager: ObservableObject {
         
         // Return the current verse
         guard let verseId = rotationState.currentVerseId else {
-            // Rotation exhausted - reset and get first
+            // Rotation exhausted - reset and get first (shuffle all verses again)
             resetRotation(with: eligibleIds)
             guard let newId = rotationState.currentVerseId else { return nil }
             saveCurrentVerseId(newId)
@@ -157,7 +173,16 @@ final class VerseRotationManager: ObservableObject {
     
     /// Resets the rotation with new verses (e.g., when filters change)
     func resetRotation(with verseIds: [String]) {
-        rotationState.reset(with: verseIds)
+        // Check if we need to show 15.5 first after onboarding
+        let hasCompletedOnboarding = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
+        let hasShownFirstVerse = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
+        
+        if hasCompletedOnboarding && !hasShownFirstVerse && verseIds.contains("15.5") {
+            rotationState.reset(with: verseIds, firstVerseId: "15.5")
+        } else {
+            rotationState.reset(with: verseIds)
+        }
+        
         if let firstId = rotationState.currentVerseId {
             saveCurrentVerseId(firstId)
         }
@@ -178,6 +203,15 @@ final class VerseRotationManager: ObservableObject {
     /// Ensures the rotation state is valid for the given eligible verses
     /// Resets if empty or if the eligible set has changed
     private func ensureRotationValid(for eligibleIds: [String]) {
+        // Check if this is the first time after onboarding - prioritize 15.5
+        let hasCompletedOnboarding = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
+        let hasShownFirstVerse = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
+        
+        if hasCompletedOnboarding && !hasShownFirstVerse && eligibleIds.contains("15.5") {
+            resetRotation(with: eligibleIds)
+            return
+        }
+        
         // Check if rotation is empty
         if rotationState.shuffledVerseIds.isEmpty {
             resetRotation(with: eligibleIds)

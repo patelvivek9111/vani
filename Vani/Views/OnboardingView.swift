@@ -735,6 +735,15 @@ struct OnboardingView: View {
     
     private func completeOnboarding() {
         settings.hasCompletedOnboarding = true
+        // Clear rotation state and flags so 15.5 shows first
+        if let defaults = AppConstants.sharedUserDefaults {
+            settings.hasShownFirstVerse = false
+            defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.currentVerseId)
+            defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.verseRotationState)
+            defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot)
+        }
+        // Reset rotation manager
+        VerseRotationManager.shared.resetRotation(with: [])
         onComplete()
     }
 }

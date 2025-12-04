@@ -105,6 +105,11 @@ final class SettingsManager: ObservableObject {
         didSet { saveHasCompletedOnboarding() }
     }
     
+    /// Whether the first verse (15.5) has been shown after onboarding
+    @Published var hasShownFirstVerse: Bool {
+        didSet { saveHasShownFirstVerse() }
+    }
+    
     // MARK: - Published Properties (Share Template)
     
     /// Selected share card template
@@ -155,6 +160,7 @@ final class SettingsManager: ObservableObject {
         
         // Load onboarding
         self.hasCompletedOnboarding = Self.loadHasCompletedOnboarding(from: self.defaults)
+        self.hasShownFirstVerse = Self.loadHasShownFirstVerse(from: self.defaults)
         
         // Load share template
         self.shareTemplate = Self.loadShareTemplate(from: self.defaults)
@@ -168,7 +174,7 @@ final class SettingsManager: ObservableObject {
     private static func loadHomeDisplayMode(from defaults: UserDefaults) -> HomeDisplayMode {
         guard let rawValue = defaults.string(forKey: AppConstants.UserDefaultsKeys.homeDisplayMode),
               let mode = HomeDisplayMode(rawValue: rawValue) else {
-            return .essence // Default
+            return .translation // Default
         }
         return mode
     }
@@ -186,7 +192,7 @@ final class SettingsManager: ObservableObject {
     private static func loadMediumWidgetMode(from defaults: UserDefaults) -> MediumWidgetMode {
         guard let rawValue = defaults.string(forKey: AppConstants.UserDefaultsKeys.mediumWidgetMode),
               let mode = MediumWidgetMode(rawValue: rawValue) else {
-            return .essence // Default
+            return .transliteration // Default
         }
         return mode
     }
@@ -267,6 +273,10 @@ final class SettingsManager: ObservableObject {
         defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
     }
     
+    private static func loadHasShownFirstVerse(from defaults: UserDefaults) -> Bool {
+        defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
+    }
+    
     // MARK: - Loading Methods (Share Template)
     
     private static func loadShareTemplate(from defaults: UserDefaults) -> ShareTemplate {
@@ -335,6 +345,10 @@ final class SettingsManager: ObservableObject {
         defaults.set(hasCompletedOnboarding, forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
     }
     
+    private func saveHasShownFirstVerse() {
+        defaults.set(hasShownFirstVerse, forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
+    }
+    
     private func saveShareTemplate() {
         defaults.set(shareTemplate.rawValue, forKey: AppConstants.UserDefaultsKeys.shareTemplate)
     }
@@ -354,9 +368,9 @@ final class SettingsManager: ObservableObject {
     
     /// Resets all settings to defaults
     func resetToDefaults() {
-        homeDisplayMode = .essence
+        homeDisplayMode = .translation
         appTheme = .pureBlack
-        mediumWidgetMode = .essence
+        mediumWidgetMode = .transliteration
         largeWidgetTop = .sanskrit
         largeWidgetBottom = .essence
         currentVerseId = nil  // Will pick verse based on rotation

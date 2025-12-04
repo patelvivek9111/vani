@@ -130,7 +130,7 @@ struct VaniTimelineProvider: TimelineProvider {
         // Read widget display settings
         let mediumMode: MediumWidgetMode = {
             guard let raw = defaults.string(forKey: AppConstants.UserDefaultsKeys.mediumWidgetMode),
-                  let mode = MediumWidgetMode(rawValue: raw) else { return .essence }
+                  let mode = MediumWidgetMode(rawValue: raw) else { return .transliteration }
             return mode
         }()
         
