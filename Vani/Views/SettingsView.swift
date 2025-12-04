@@ -432,9 +432,9 @@ struct SettingsView: View {
                     .background(theme.secondaryTextColor.opacity(0.3))
                     .padding(.leading, 16)
                 
-                Link(destination: URL(string: "https://www.holy-bhagavad-gita.org")!) {
+                Link(destination: URL(string: "https://www.veducation.world/library")!) {
                     HStack {
-                        Text("Learn More About the Gita")
+                        Text("Explore Vedic Literature")
                             .foregroundStyle(theme.primaryTextColor)
                         Spacer()
                         Image(systemName: "arrow.up.right")
