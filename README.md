@@ -1,4 +1,4 @@
-# Vani - Bhagavad Gita Widget App
+# Vāṇī - Bhagavad Gita Widget App
 
 <div align="center">
 
