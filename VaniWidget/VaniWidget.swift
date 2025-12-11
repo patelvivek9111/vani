@@ -306,34 +306,37 @@ struct MediumWidgetView: View {
                     
                     VStack(alignment: .leading, spacing: 0) {
                         // Header
-                        HStack {
+                        HStack(alignment: .center) {
                             Text("Kṛṣṇa Vāṇī")
-                                .font(.system(size: 18, weight: .medium, design: theme.fontDesign))
+                                .font(.system(size: 17, weight: .semibold, design: theme.fontDesign))
                                 .foregroundStyle(theme.accentColor)
-                            
-                            Text("•")
-                                .foregroundStyle(theme.accentColor.opacity(0.5))
-                            
-                            Text(entry.mediumMode.displayName)
-                                .font(.caption)
-                                .foregroundStyle(theme.secondaryTextColor)
                             
                             Spacer()
                             
                             Text("BG \(verse.id)")
-                                .font(.caption.weight(.semibold))
+                                .font(.system(size: 11, weight: .semibold, design: .rounded))
                                 .foregroundStyle(theme.isLightTheme ? .white : theme.backgroundColor)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(Capsule().fill(theme.accentColor))
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 5)
+                                .background(
+                                    Capsule()
+                                        .fill(theme.accentColor)
+                                        .shadow(color: .black.opacity(0.15), radius: 2, y: 1)
+                                )
                         }
                         
-                        Spacer(minLength: 8)
+                        Divider()
+                            .background(theme.accentColor.opacity(0.3))
+                            .padding(.vertical, 6)
                         
-                        // Main content - centered vertically
+                        Spacer(minLength: 0)
+                        
+                        // Main content
                         mainContent(for: verse)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .multilineTextAlignment(.leading)
                         
-                        Spacer(minLength: 8)
+                        Spacer(minLength: 0)
                     }
                     .padding(10)
                 }
@@ -352,25 +355,28 @@ struct MediumWidgetView: View {
         switch entry.mediumMode {
         case .sanskrit:
             Text(verse.sanskrit)
-                .font(.system(size: 16, weight: .regular, design: theme.fontDesign))
+                .font(.system(size: 17, weight: .regular, design: theme.fontDesign))
                 .foregroundStyle(theme.sanskritTextColor)
-                .lineSpacing(4)
-                .minimumScaleFactor(0.7)
+                .lineSpacing(6)
+                .fixedSize(horizontal: false, vertical: true)
+                .minimumScaleFactor(0.75)
             
         case .transliteration:
             Text(verse.transliteration)
-                .font(.system(size: 14, weight: .regular, design: theme.fontDesign))
+                .font(.system(size: 15, weight: .regular, design: theme.fontDesign))
                 .italic()
-                .foregroundStyle(theme.primaryTextColor)
-                .lineSpacing(3)
-                .minimumScaleFactor(0.7)
+                .foregroundStyle(theme.primaryTextColor.opacity(0.95))
+                .lineSpacing(5)
+                .fixedSize(horizontal: false, vertical: true)
+                .minimumScaleFactor(0.75)
             
         case .essence:
             Text(personalizedText(for: verse))
-                .font(themedFont(size: 16, weight: theme.bodyFontWeight))
-                .foregroundStyle(theme.primaryTextColor)
-                .lineSpacing(4)
-                .minimumScaleFactor(0.75)
+                .font(themedFont(size: 17, weight: theme.bodyFontWeight))
+                .foregroundStyle(theme.primaryTextColor.opacity(0.95))
+                .lineSpacing(6)
+                .fixedSize(horizontal: false, vertical: true)
+                .minimumScaleFactor(0.8)
         }
     }
     

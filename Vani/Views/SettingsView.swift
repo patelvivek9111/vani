@@ -422,7 +422,7 @@ struct SettingsView: View {
                     Text("App Version")
                         .foregroundStyle(theme.primaryTextColor)
                     Spacer()
-                    Text("1.0")
+                    Text("1.0.2")
                         .foregroundStyle(theme.secondaryTextColor)
                 }
                 .padding(.horizontal, 16)

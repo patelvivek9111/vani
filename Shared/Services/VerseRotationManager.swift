@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import WidgetKit
 
 /// Manages verse rotation ensuring no verse repeats until all have been shown
 final class VerseRotationManager: ObservableObject {
@@ -171,6 +172,60 @@ final class VerseRotationManager: ObservableObject {
         return eligibleVerses.first { $0.id == verseId }
     }
     
+    /// Marks a specific verse as shown by advancing the rotation to it
+    /// This counts the verse as displayed - it won't show again until all verses are shown
+    /// Even if the verse was already shown, manually setting it still counts as displayed
+    /// - Parameters:
+    ///   - verseId: The verse ID to mark as shown
+    ///   - eligibleVerses: All verses that pass current filters
+    func markVerseAsShown(verseId: String, from eligibleVerses: [Verse]) {
+        guard !eligibleVerses.isEmpty else { return }
+        
+        let eligibleIds = eligibleVerses.map { $0.id }
+        
+        // Ensure the verse is in the eligible set
+        guard eligibleIds.contains(verseId) else { return }
+        
+        // Ensure rotation is valid
+        ensureRotationValid(for: eligibleIds)
+        
+        // Find the verse in the rotation
+        guard let verseIndex = rotationState.shuffledVerseIds.firstIndex(of: verseId) else {
+            // Verse not in rotation - reset rotation to include it
+            resetRotation(with: eligibleIds)
+            // Try to find it again after reset
+            if let newIndex = rotationState.shuffledVerseIds.firstIndex(of: verseId) {
+                // Advance to this verse (marking all verses before it as shown)
+                rotationState.currentIndex = newIndex + 1
+                rotationState.lastAdvancedAt = Date()
+            }
+            saveRotationState()
+            return
+        }
+        
+        // Always advance to this verse, even if it was already shown
+        // This ensures manually setting a verse always counts as displayed
+        if verseIndex >= rotationState.currentIndex {
+            // Verse is in the future - advance to it (marking it and all before as shown)
+            rotationState.currentIndex = verseIndex + 1
+            rotationState.lastAdvancedAt = Date()
+        } else {
+            // Verse was already shown in the past
+            // Since user manually set it, we should still count it
+            // We can't go backwards, but we ensure it's tracked
+            // The verse won't appear again until rotation resets anyway
+            // Just update the timestamp to reflect this manual action
+            rotationState.lastAdvancedAt = Date()
+        }
+        
+        // If we've exhausted the rotation, reset it
+        if rotationState.isExhausted {
+            resetRotation(with: eligibleIds)
+        }
+        
+        saveRotationState()
+    }
+    
     /// Resets the rotation with new verses (e.g., when filters change)
     func resetRotation(with verseIds: [String]) {
         // Check if we need to show 15.5 first after onboarding
@@ -240,6 +295,8 @@ final class VerseRotationManager: ObservableObject {
         // Update the current verse ID
         if let verseId = rotationState.currentVerseId {
             saveCurrentVerseId(verseId)
+            // Reload widget timeline immediately when verse changes
+            WidgetHelper.reloadAllTimelines()
         }
     }
     

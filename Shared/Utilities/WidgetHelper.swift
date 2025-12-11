@@ -26,6 +26,14 @@ enum WidgetHelper {
         }
         #endif
         
+        // Only reload widgets from the main app, not from widget extension
+        // Check if we're running in a widget extension by looking at the bundle
+        if let bundleId = Bundle.main.bundleIdentifier,
+           bundleId.contains("WidgetExtension") || bundleId.contains(".widget") {
+            // We're in a widget extension - don't reload widgets from here
+            return
+        }
+        
         // Perform widget reload on main thread
         // Note: WidgetCenter.shared.reloadAllTimelines() doesn't throw, so no error handling needed
         let reloadBlock = {

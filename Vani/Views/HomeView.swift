@@ -90,6 +90,7 @@ struct HomeView: View {
             .navigationDestination(isPresented: $showingFullVerse) {
                 if let verse = currentVerse {
                     FullVerseView(verse: verse, chapter: chapter)
+                        .id(verse.id) // Force refresh when verse changes
                 }
             }
             .sheet(isPresented: $showingShareSheet) {
@@ -97,10 +98,13 @@ struct HomeView: View {
                     ShareSheet(items: [image])
                 }
             }
-        }
-        .onAppear {
-            if allVerses.isEmpty {
-                loadData()
+            .onAppear {
+                if allVerses.isEmpty {
+                    loadData()
+                }
+            }
+            .onChange(of: settings.currentVerseId) { _, _ in
+                updateVerseFromSettings()
             }
         }
     }
@@ -724,7 +728,7 @@ struct HomeView: View {
             
             // Sync to settings for widget access
             settings.currentVerseId = verse.id
-            WidgetHelper.reloadAllTimelines()
+            WidgetCenter.shared.reloadAllTimelines()
             
             isLoading = false
         } catch let error as GitaRepositoryError {
@@ -742,6 +746,27 @@ struct HomeView: View {
             // Generic error fallback
             errorMessage = "Unable to load verses. Please try again."
             isLoading = false
+        }
+    }
+    
+    private func updateVerseFromSettings() {
+        guard let newId = settings.currentVerseId, !isLoading else { return }
+        
+        // Find and update to the new verse
+        if let newVerse = allVerses.first(where: { $0.id == newId }),
+           newVerse.id != currentVerse?.id {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                currentVerse = newVerse
+                
+                // Update chapter if needed
+                do {
+                    let data = try repository.loadData()
+                    let chapterNumber = Int(newId.split(separator: ".").first ?? "") ?? 0
+                    chapter = data.chapter(chapterNumber)
+                } catch {
+                    // Keep existing chapter
+                }
+            }
         }
     }
     
@@ -765,7 +790,7 @@ struct HomeView: View {
             
             if let verse = currentVerse {
                 settings.currentVerseId = verse.id
-                WidgetHelper.reloadAllTimelines()
+                WidgetCenter.shared.reloadAllTimelines()
             }
         }
         
@@ -954,10 +979,9 @@ struct MinimalShareView: View {
             VStack(spacing: 0) {
                 Spacer()
                 
-                // Main content - centered
-                ShareViewHelpers.shareContent(for: verse, displayMode: displayMode, theme: theme, baseSize: 56)
+                // Main content - centered (force black text for minimal template)
+                minimalContent(for: verse, displayMode: displayMode, theme: theme, baseSize: 56)
                     .padding(.horizontal, 80)
-                    .foregroundColor(.black)
                 
                 Spacer()
                     .frame(height: 100)
@@ -986,6 +1010,48 @@ struct MinimalShareView: View {
                 Spacer()
             }
             .padding(.bottom, 80)
+        }
+    }
+    
+    // Minimal-specific content renderer that forces black text
+    @ViewBuilder
+    private func minimalContent(for verse: Verse, displayMode: HomeDisplayMode, theme: AppTheme, baseSize: CGFloat) -> some View {
+        switch displayMode {
+        case .sanskrit:
+            Text(verse.sanskrit)
+                .font(ShareViewHelpers.shareFont(size: baseSize, theme: theme))
+                .foregroundColor(.black)
+                .multilineTextAlignment(.center)
+                .lineSpacing(20)
+            
+        case .transliteration:
+            Text(verse.transliteration)
+                .font(ShareViewHelpers.shareFont(size: baseSize * 0.92, theme: theme))
+                .italic()
+                .foregroundColor(.black)
+                .multilineTextAlignment(.center)
+                .lineSpacing(20)
+            
+        case .translation:
+            Text(verse.translationFull)
+                .font(ShareViewHelpers.shareFont(size: baseSize * 0.85, theme: theme))
+                .foregroundColor(.black)
+                .multilineTextAlignment(.center)
+                .lineSpacing(18)
+            
+        case .essence:
+            Text(verse.widgetLine)
+                .font(ShareViewHelpers.shareFont(size: baseSize * 1.08, theme: theme))
+                .foregroundColor(.black)
+                .multilineTextAlignment(.center)
+                .lineSpacing(24)
+        
+        case .personalized:
+            Text(verse.widgetLine)
+                .font(ShareViewHelpers.shareFont(size: baseSize * 1.08, theme: theme))
+                .foregroundColor(.black)
+                .multilineTextAlignment(.center)
+                .lineSpacing(24)
         }
     }
 }

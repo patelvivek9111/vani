@@ -45,9 +45,16 @@ struct VaniApp: App {
                             // Refresh widget when app goes to background
                             WidgetHelper.reloadAllTimelines()
                         }
+                        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
+                            // Refresh widget when app becomes active to catch any missed updates
+                            // (e.g., if verse changed at 4:00 AM while app was closed)
+                            WidgetHelper.reloadAllTimelines()
+                        }
                         .onAppear {
                             // Schedule notifications based on saved settings
                             setupNotifications()
+                            // Also reload widget on app appear to ensure it's up to date
+                            WidgetHelper.reloadAllTimelines()
                         }
                 }
                 

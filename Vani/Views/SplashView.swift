@@ -136,7 +136,7 @@ struct SplashView: View {
                     .opacity(textOpacity)
                 
                 // Elegant tagline
-                Text("Daily Wisdom")
+                Text("ॐ नमो भगवते वासुदेवाय")
                     .font(.system(size: 14, weight: .light, design: .serif))
                     .foregroundStyle(Color.white.opacity(0.5))
                     .tracking(2)
