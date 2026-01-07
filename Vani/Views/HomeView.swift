@@ -432,9 +432,6 @@ struct HomeView: View {
                 .lineSpacing(10)
                 .minimumScaleFactor(0.7)
             
-            // Key concepts
-            keyConceptsView(verse: verse)
-            
             // Tap hint
             tapHint
         }
@@ -453,11 +450,6 @@ struct HomeView: View {
                 .multilineTextAlignment(.center)
                 .lineSpacing(12)
                 .fixedSize(horizontal: false, vertical: true)
-            
-            // Key concepts
-            if let verse = currentVerse {
-                keyConceptsView(verse: verse)
-            }
             
             // Tap hint
             tapHint
@@ -676,7 +668,7 @@ struct HomeView: View {
         let text = """
 \(content)
 
-— Bhagavad Gita \(verse.id)
+— Bhagavad Gītā \(verse.id)
 """
         
         UIPasteboard.general.string = text
@@ -725,6 +717,10 @@ struct HomeView: View {
                 isLoading = false
                 return
             }
+            
+            // Update chapter based on the current verse's chapter number
+            let chapterNumber = Int(verse.id.split(separator: ".").first ?? "") ?? 0
+            chapter = data.chapter(chapterNumber)
             
             // Sync to settings for widget access
             settings.currentVerseId = verse.id
@@ -789,6 +785,15 @@ struct HomeView: View {
             }
             
             if let verse = currentVerse {
+                // Update chapter based on the new verse's chapter number
+                do {
+                    let data = try repository.loadData()
+                    let chapterNumber = Int(verse.id.split(separator: ".").first ?? "") ?? 0
+                    chapter = data.chapter(chapterNumber)
+                } catch {
+                    // Keep existing chapter if update fails
+                }
+                
                 settings.currentVerseId = verse.id
                 WidgetCenter.shared.reloadAllTimelines()
             }
@@ -880,13 +885,13 @@ struct ClassicShareView: View {
                     
                     // Attribution - bigger text
                     VStack(spacing: 16) {
-                        Text("— Bhagavad Gita \(verse.id)")
+                        Text("— Bhagavad Gītā \(verse.id)")
                             .font(.system(size: 42, weight: .semibold, design: theme.fontDesign))
                             .foregroundColor(theme.accentColor)
                         
                         if let chapter = chapter {
                             Text(chapter.chapterNameEnglish)
-                                .font(.system(size: 28, weight: .regular))
+                                .font(.system(size: 32, weight: .regular))
                                 .foregroundColor(theme.secondaryTextColor)
                         }
                     }
@@ -988,13 +993,13 @@ struct MinimalShareView: View {
                 
                 // Attribution - minimal
                 VStack(spacing: 12) {
-                    Text("— Bhagavad Gita \(verse.id)")
+                    Text("— Bhagavad Gītā \(verse.id)")
                         .font(.system(size: 36, weight: .regular, design: .serif))
                         .foregroundColor(.gray)
                     
                     if let chapter = chapter {
                         Text(chapter.chapterNameEnglish)
-                            .font(.system(size: 24, weight: .light))
+                            .font(.system(size: 28, weight: .light))
                             .foregroundColor(.gray.opacity(0.7))
                     }
                 }
@@ -1120,13 +1125,13 @@ struct OrnateShareView: View {
                             
                             // Attribution
                             VStack(spacing: 16) {
-                                Text("— Bhagavad Gita \(verse.id)")
+                                Text("— Bhagavad Gītā \(verse.id)")
                                     .font(.system(size: 40, weight: .semibold, design: theme.fontDesign))
                                     .foregroundColor(theme.accentColor)
                                 
                                 if let chapter = chapter {
                                     Text(chapter.chapterNameEnglish)
-                                        .font(.system(size: 26, weight: .regular))
+                                        .font(.system(size: 30, weight: .regular))
                                         .foregroundColor(theme.secondaryTextColor)
                                 }
                             }
@@ -1205,13 +1210,13 @@ struct QuoteShareView: View {
                 
                 // Attribution - bold
                 VStack(spacing: 20) {
-                    Text("— Bhagavad Gita \(verse.id)")
+                    Text("— Bhagavad Gītā \(verse.id)")
                         .font(.system(size: 48, weight: .bold))
                         .foregroundColor(theme.accentColor)
                     
                     if let chapter = chapter {
                         Text(chapter.chapterNameEnglish)
-                            .font(.system(size: 32, weight: .medium))
+                            .font(.system(size: 36, weight: .medium))
                             .foregroundColor(.white.opacity(0.7))
                     }
                 }
@@ -1280,14 +1285,14 @@ struct ElegantShareView: View {
                 
                 // Attribution - elegant spacing
                 VStack(spacing: 20) {
-                    Text("— Bhagavad Gita \(verse.id)")
+                    Text("— Bhagavad Gītā \(verse.id)")
                         .font(.system(size: 38, weight: .medium, design: .serif))
                         .foregroundColor(theme.accentColor)
                         .tracking(2)
                     
                     if let chapter = chapter {
                         Text(chapter.chapterNameEnglish)
-                            .font(.system(size: 24, weight: .light, design: .serif))
+                            .font(.system(size: 29, weight: .light, design: .serif))
                             .foregroundColor(theme.secondaryTextColor)
                             .tracking(1)
                     }

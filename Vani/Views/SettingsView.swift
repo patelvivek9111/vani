@@ -8,6 +8,57 @@
 import SwiftUI
 import WidgetKit
 
+// MARK: - Custom Toggle Style
+
+struct CustomToggleStyle: ToggleStyle {
+    var showLabels: Bool = false
+    
+    func makeBody(configuration: Configuration) -> some View {
+        ZStack {
+            // Background track with outline - larger to show text better
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.white)
+                .frame(width: 65, height: 31)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.black, lineWidth: 1)
+                )
+            
+            // Text labels inside the toggle
+            if showLabels {
+                HStack {
+                    if !configuration.isOn {
+                        Spacer()
+                        Text("OFF")
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(.red)
+                            .padding(.trailing, 10)
+                    } else {
+                        Text("ON")
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(.green)
+                            .padding(.leading, 10)
+                        Spacer()
+                    }
+                }
+                .frame(width: 65)
+            }
+            
+            // Thumb (circular slider) - positioned to stay within track bounds
+            Circle()
+                .fill(Color.black)
+                .frame(width: 25, height: 25)
+                .offset(x: configuration.isOn ? 18 : -18)
+        }
+        .frame(width: 65, height: 31)
+        .clipped()
+        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: configuration.isOn)
+        .onTapGesture {
+            configuration.isOn.toggle()
+        }
+    }
+}
+
 struct SettingsView: View {
     
     @EnvironmentObject private var settings: SettingsManager
@@ -153,7 +204,7 @@ struct SettingsView: View {
                     
                     Toggle("", isOn: $settings.verseNotificationsEnabled)
                         .labelsHidden()
-                        .tint(theme.accentColor)
+                        .toggleStyle(CustomToggleStyle(showLabels: true))
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
@@ -285,7 +336,7 @@ struct SettingsView: View {
                     }
                 ))
                 .disabled(settings.userName.isEmpty)
-                .tint(theme.accentColor)
+                .toggleStyle(CustomToggleStyle(showLabels: true))
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 14)
@@ -422,7 +473,7 @@ struct SettingsView: View {
                     Text("App Version")
                         .foregroundStyle(theme.primaryTextColor)
                     Spacer()
-                    Text("1.0.2")
+                    Text("1.0.3")
                         .foregroundStyle(theme.secondaryTextColor)
                 }
                 .padding(.horizontal, 16)
@@ -679,19 +730,6 @@ struct ThemedLargeWidgetPreview: View {
             }
             
             Spacer(minLength: 6)
-            
-            // Concepts
-            HStack(spacing: 4) {
-                ForEach(verse?.keyConcepts.prefix(2) ?? ["Karma Yoga", "Duty"], id: \.self) { tag in
-                    Text(tag.replacingOccurrences(of: "_", with: " ").capitalized)
-                        .font(.system(size: 7, weight: .medium))
-                        .foregroundStyle(theme.accentColor)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Capsule().fill(theme.accentColor.opacity(0.15)))
-                }
-                Spacer()
-            }
         }
         .padding(14)
         .frame(height: 220)

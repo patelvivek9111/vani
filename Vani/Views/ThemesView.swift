@@ -453,18 +453,6 @@ struct LargeWidgetPreviewCard: View {
                     .lineLimit(3)
                 
                 Spacer(minLength: 4)
-                
-                // Tags
-                HStack(spacing: 4) {
-                    ForEach(conceptsToShow.prefix(3), id: \.self) { concept in
-                        Text(concept.replacingOccurrences(of: "_", with: " ").capitalized)
-                            .font(.system(size: 7, weight: .medium))
-                            .foregroundStyle(theme.accentColor.opacity(0.8))
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 3)
-                            .background(Capsule().fill(theme.buttonBackgroundColor))
-                    }
-                }
             }
             .padding(12)
         }

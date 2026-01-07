@@ -27,6 +27,11 @@ struct FullVerseView: View {
     
     private var theme: AppTheme { settings.appTheme }
     
+    // Check if this verse is already the home verse
+    private var isCurrentHomeVerse: Bool {
+        settings.currentVerseId == verse.id
+    }
+    
     // Search results - matching verses across all verses (excluding current verse)
     private var searchResults: [Verse] {
         let trimmedSearch = searchText.trimmingCharacters(in: .whitespaces)
@@ -125,18 +130,15 @@ struct FullVerseView: View {
                                 isPrimary: true
                             )
                             
-                            // Key Concepts - Enhanced design
-                            if !verse.keyConcepts.isEmpty {
-                                enhancedConceptsSection
-                            }
-                            
                             // Vocative Info - Enhanced design
                             if verse.hasVocative && !verse.vocativeTerms.isEmpty {
                                 enhancedVocativeSection
                             }
                             
-                            // Set as Home Verse button
-                            setAsHomeVerseButton
+                            // Set as Home Verse button (only show if not already the home verse)
+                            if !isCurrentHomeVerse {
+                                setAsHomeVerseButton
+                            }
                         }
                         .padding(.horizontal, 20)
                         .padding(.top, 8)

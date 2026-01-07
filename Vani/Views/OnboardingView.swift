@@ -41,6 +41,7 @@ struct OnboardingView: View {
     @State private var animateIn: Bool = false
     @State private var showWidgetInstructions: Bool = false
     @State private var breathingScale: CGFloat = 1.0
+    @FocusState private var isNameFieldFocused: Bool
     
     let onComplete: () -> Void
     
@@ -320,6 +321,7 @@ struct OnboardingView: View {
                         )
                 )
                 .padding(.horizontal, 40)
+                .focused($isNameFieldFocused)
             
             Spacer()
             
@@ -327,6 +329,8 @@ struct OnboardingView: View {
             navigationButtons(
                 backAction: { goToStep(.welcome) },
                 nextAction: {
+                    // Dismiss keyboard before navigating
+                    isNameFieldFocused = false
                     settings.userName = tempName
                     goToStep(.theme)
                 },
@@ -734,16 +738,27 @@ struct OnboardingView: View {
     }
     
     private func completeOnboarding() {
-        settings.hasCompletedOnboarding = true
-        // Clear rotation state and flags so 15.5 shows first
+        // IMPORTANT: Set flags in correct order to ensure 15.5 shows first
+        // Use UserDefaults directly to ensure immediate write
         if let defaults = AppConstants.sharedUserDefaults {
-            settings.hasShownFirstVerse = false
-            defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.currentVerseId)
-            defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.verseRotationState)
-            defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot)
+            // First, explicitly clear the "shown first verse" flag
+            defaults.set(false, forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
+            
+            // Force clear the rotation manager's internal state completely
+            VerseRotationManager.shared.forceClearRotationState()
+            
+            // Then set onboarding as complete (this triggers the check in getCurrentVerse)
+            defaults.set(true, forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
+            
+            // Force synchronize UserDefaults to ensure flags are written immediately
+            defaults.synchronize()
         }
-        // Reset rotation manager
-        VerseRotationManager.shared.resetRotation(with: [])
+        
+        // Also update SettingsManager to keep it in sync
+        settings.hasShownFirstVerse = false
+        settings.hasCompletedOnboarding = true
+        
+        // Don't reset with empty array - let HomeView load data and getCurrentVerse will handle showing 15.5 first
         onComplete()
     }
 }

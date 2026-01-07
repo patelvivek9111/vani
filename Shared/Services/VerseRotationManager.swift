@@ -103,32 +103,67 @@ final class VerseRotationManager: ObservableObject {
         
         let eligibleIds = eligibleVerses.map { $0.id }
         
-        // Check if this is the first time after onboarding - show 15.5 immediately
+        // PRIORITY: Check if this is the first time after onboarding - show 15.5 immediately
+        // This check MUST happen before any other rotation logic
+        // Read directly from UserDefaults to ensure we get the latest values
         let hasCompletedOnboarding = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
         let hasShownFirstVerse = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
         
+        // CRITICAL: If onboarding just completed and first verse hasn't been shown, 
+        // AND 15.5 is in eligible verses, show it immediately regardless of rotation state
         if hasCompletedOnboarding && !hasShownFirstVerse && eligibleIds.contains("15.5") {
-            // Force reset with 15.5 as first
+            // Force reset with 15.5 as first - this MUST be the first verse shown
+            // Clear any existing rotation state first
+            rotationState = .empty
             rotationState.reset(with: eligibleIds, firstVerseId: "15.5")
             saveRotationState()
-            // Mark as shown
+            // Mark as shown BEFORE returning to prevent any other code path from running
             defaults.set(true, forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
+            defaults.synchronize() // Force immediate write
             if let verse15_5 = eligibleVerses.first(where: { $0.id == "15.5" }) {
                 saveCurrentVerseId("15.5")
+                // Reload widget immediately with 15.5
+                WidgetCenter.shared.reloadAllTimelines()
                 return verse15_5
             }
         }
         
         // Ensure rotation is initialized/valid for current eligible verses
+        // This will only run if the 15.5 check above didn't trigger
         ensureRotationValid(for: eligibleIds)
         
-        // Check if we need to advance based on schedule
+        // CRITICAL: Atomic slot change check to prevent race conditions
+        // Strategy: Read fresh state, check, and update atomically
         let currentSlotKey = slotKey(for: date)
         
-        if lastScheduledSlot != currentSlotKey {
-            // Time slot changed - advance to next verse
-            advanceRotation(eligibleIds: eligibleIds)
-            lastScheduledSlot = currentSlotKey
+        // Always read fresh from UserDefaults (never use cached values) to prevent race conditions
+        // This ensures we see the latest state even if another process (app/widget) just updated it
+        let savedSlotKey = defaults.string(forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot) ?? ""
+        
+        // Handle three cases:
+        // 1. First time (empty slot key) - initialize without advancing
+        // 2. Slot changed - advance to next verse (with double-check to prevent race conditions)
+        // 3. Same slot - no action needed
+        
+        if savedSlotKey.isEmpty {
+            // First time initialization - set slot key to current slot WITHOUT advancing
+            // The verse is already correctly set by ensureRotationValid above
+            defaults.set(currentSlotKey, forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot)
+            defaults.synchronize()
+        } else if savedSlotKey != currentSlotKey {
+            // Slot changed - need to advance to next verse
+            // Double-check: Re-read slot key to see if another process already advanced
+            // This prevents duplicate advances when multiple processes check simultaneously
+            let recheckSlotKey = defaults.string(forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot) ?? ""
+            
+            if recheckSlotKey != currentSlotKey {
+                // Slot key still shows old slot - safe to advance (no other process advanced yet)
+                // Pass the new slot key to advanceRotation so it saves everything atomically
+                advanceRotation(eligibleIds: eligibleIds, newSlotKey: currentSlotKey)
+            } else {
+                // Another process already advanced (recheckSlotKey == currentSlotKey)
+                // Just continue with current rotation state - no need to advance again
+            }
         }
         
         // Return the current verse
@@ -137,15 +172,20 @@ final class VerseRotationManager: ObservableObject {
             resetRotation(with: eligibleIds)
             guard let newId = rotationState.currentVerseId else { return nil }
             saveCurrentVerseId(newId)
+            // Ensure slot key is set
+            defaults.set(currentSlotKey, forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot)
+            defaults.synchronize()
             return eligibleVerses.first { $0.id == newId }
         }
         
-        // Sync the current verse ID
+        // Sync the current verse ID (only if it changed to prevent unnecessary writes)
         if currentVerseId != verseId {
             saveCurrentVerseId(verseId)
+            defaults.synchronize() // Force immediate write for widget consistency
         }
         
-        return eligibleVerses.first { $0.id == verseId }
+        let finalVerse = eligibleVerses.first { $0.id == verseId }
+        return finalVerse
     }
     
     /// Manually advances to the next verse (e.g., user taps refresh)
@@ -241,6 +281,23 @@ final class VerseRotationManager: ObservableObject {
         if let firstId = rotationState.currentVerseId {
             saveCurrentVerseId(firstId)
         }
+        
+        // CRITICAL: Always initialize slot key to current slot when resetting
+        // This prevents the next getCurrentVerse call from thinking the slot changed
+        // Use Date() here since resetRotation is typically called at operation start
+        let currentSlot = slotKey(for: Date())
+        defaults.set(currentSlot, forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot)
+        defaults.synchronize()
+    }
+    
+    /// Force clears all rotation state (used after onboarding)
+    func forceClearRotationState() {
+        rotationState = .empty
+        currentVerseId = nil
+        lastScheduledSlot = ""
+        defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.verseRotationState)
+        defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.currentVerseId)
+        defaults.removeObject(forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot)
     }
     
     // MARK: - Private Helpers
@@ -258,16 +315,18 @@ final class VerseRotationManager: ObservableObject {
     /// Ensures the rotation state is valid for the given eligible verses
     /// Resets if empty or if the eligible set has changed
     private func ensureRotationValid(for eligibleIds: [String]) {
-        // Check if this is the first time after onboarding - prioritize 15.5
+        // PRIORITY: Check if this is the first time after onboarding - prioritize 15.5
+        // This must be checked BEFORE checking if rotation is empty
         let hasCompletedOnboarding = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasCompletedOnboarding)
         let hasShownFirstVerse = defaults.bool(forKey: AppConstants.UserDefaultsKeys.hasShownFirstVerse)
         
         if hasCompletedOnboarding && !hasShownFirstVerse && eligibleIds.contains("15.5") {
+            // Reset with 15.5 as first - this will be handled by resetRotation
             resetRotation(with: eligibleIds)
             return
         }
         
-        // Check if rotation is empty
+        // Check if rotation is empty - only reset if we're past the first verse check
         if rotationState.shuffledVerseIds.isEmpty {
             resetRotation(with: eligibleIds)
             return
@@ -284,7 +343,9 @@ final class VerseRotationManager: ObservableObject {
     }
     
     /// Advances the rotation, resetting if exhausted
-    private func advanceRotation(eligibleIds: [String]) {
+    /// - Parameter eligibleIds: The eligible verse IDs
+    /// - Parameter newSlotKey: Optional slot key to save atomically with the rotation state
+    private func advanceRotation(eligibleIds: [String], newSlotKey: String? = nil) {
         rotationState.advance()
         
         // If exhausted, reset with fresh shuffle
@@ -292,11 +353,26 @@ final class VerseRotationManager: ObservableObject {
             resetRotation(with: eligibleIds)
         }
         
-        // Update the current verse ID
+        // Atomically save rotation state, verse ID, and slot key together
+        // This reduces race conditions by making the update atomic
+        saveRotationState()
+        
         if let verseId = rotationState.currentVerseId {
-            saveCurrentVerseId(verseId)
-            // Reload widget timeline immediately when verse changes
-            WidgetHelper.reloadAllTimelines()
+            defaults.set(verseId, forKey: AppConstants.UserDefaultsKeys.currentVerseId)
+            currentVerseId = verseId
+        }
+        
+        // If slot key provided, save it atomically with the other updates
+        if let slotKey = newSlotKey {
+            defaults.set(slotKey, forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot)
+        }
+        
+        // Force synchronization to make all updates visible immediately
+        defaults.synchronize()
+        
+        // Reload widget timeline immediately when verse changes
+        if rotationState.currentVerseId != nil {
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
     

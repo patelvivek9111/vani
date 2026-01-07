@@ -64,17 +64,17 @@ struct Verse: Codable, Identifiable, Equatable {
 
 extension Verse {
     static let sample = Verse(
-        id: "2.47",
-        verseNumber: 47,
+        id: "15.5",
+        verseNumber: 5,
         speaker: "Krishna",
-        sanskrit: "कर्मण्येवाधिकारस्ते मा फलेषु कदाचन ।\nमा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ॥४७॥",
-        transliteration: "karmaṇy-evādhikāras te mā phaleṣhu kadāchana\nmā karma-phala-hetur bhūr mā te saṅgo 'stvakarmaṇi",
+        sanskrit: "निर्मानमोहा जितसङ्गदोषा अध्यात्मनित्या विनिवृत्तकामाः ।\nद्वन्द्वैर्विमुक्ताः सुखदुःखसंज्ञैर्गच्छन्त्यमूढाः पदमव्ययं तत् ॥५॥",
+        transliteration: "nir-māna-mohā jita-saṅga-doṣhā adhyātma-nityā vinivṛitta-kāmāḥ\ndvandvair vimuktāḥ sukha-duḥkha-saṁjñair gachchhanty amūḍhāḥ padam avyayaṁ tat",
         hasVocative: false,
         vocativeTerms: [],
-        translationFull: "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself to be the cause of the results of your activities, nor be attached to inaction.",
-        widgetLine: "You have a right to duty, not to its fruits; don't act for reward, nor cling to inaction.",
+        translationFull: "Those who are free from vanity and delusion, who have overcome the evil of attachment, who dwell constantly on the self and on God, who are free from the desire to enjoy the senses, and are beyond the dualities of pleasure and pain, such liberated personalities attain My eternal Abode.",
+        widgetLine: "Those free from pride and confusion, who have overcome attachment, who think always of the self and God, who are beyond pleasure and pain—attain My eternal home.",
         personalized: nil,
-        keyConcepts: ["karma_yoga", "detachment", "duty"]
+        keyConcepts: ["detachment", "surrender", "liberation"]
     )
 }
 

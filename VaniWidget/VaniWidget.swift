@@ -91,27 +91,57 @@ struct VaniTimelineProvider: TimelineProvider {
         var entries: [VaniWidgetEntry] = []
         
         autoreleasepool {
-            // Current entry - createEntry handles errors internally
-            let currentEntry = createEntry(for: currentDate)
-            entries.append(currentEntry)
-            
-            // Next scheduled entry
-            let nextTime = schedule.nextScheduledTime(after: currentDate)
-            let nextEntry = createEntry(for: nextTime)
-            entries.append(nextEntry)
+            // Load verses first
+            let repository = BundleGitaRepository()
+            do {
+                let data = try repository.loadData()
+                let krishnaVerses = repository.getKrishnaVerses(from: data)
+                
+                guard !krishnaVerses.isEmpty else {
+                    // No verses available - create error entry
+                    entries.append(createErrorEntry(for: currentDate))
+                    let nextTime = schedule.nextScheduledTime(after: currentDate)
+                    let timeline = Timeline(entries: entries, policy: .after(nextTime))
+                    completion(timeline)
+                    return
+                }
+                
+                // Get rotation manager for timeline generation
+                let rotationManager = VerseRotationManager.forWidget()
+                
+                // CRITICAL: For the current entry, use getCurrentVerse to actually advance rotation if needed
+                // This ensures the rotation state is updated when the widget refreshes at scheduled times
+                let currentEntry = createEntry(for: currentDate)
+                entries.append(currentEntry)
+                
+                // For the next scheduled entry, use generateTimelineEntries to simulate without advancing
+                // This prevents premature rotation advances while still showing the correct future verse
+                let nextTime = schedule.nextScheduledTime(after: currentDate)
+                let timelineEntries = rotationManager.generateTimelineEntries(from: krishnaVerses, startDate: currentDate)
+                
+                // Find the next entry from the timeline (compare dates within same minute to handle timing differences)
+                let calendar = Calendar.current
+                if let nextEntry = timelineEntries.first(where: { 
+                    calendar.isDate($0.date, equalTo: nextTime, toGranularity: .minute)
+                }) {
+                    let entry = createEntryFromVerse(verse: nextEntry.verse, for: nextTime, defaults: defaults)
+                    entries.append(entry)
+                } else if timelineEntries.count > 1 {
+                    // Fallback: use the second entry (should be the next scheduled one)
+                    let nextEntry = timelineEntries[1]
+                    let entry = createEntryFromVerse(verse: nextEntry.verse, for: nextTime, defaults: defaults)
+                    entries.append(entry)
+                }
+                
+            } catch {
+                // Error loading data - create error entry
+                entries.append(createErrorEntry(for: currentDate))
+            }
         }
         
         // Ensure we always have at least one entry
         if entries.isEmpty {
-            entries.append(VaniWidgetEntry(
-                date: currentDate,
-                verse: nil,
-                mediumMode: .essence,
-                largeTop: .sanskrit,
-                largeBottom: .essence,
-                theme: .pureBlack,
-                hasError: true
-            ))
+            entries.append(createErrorEntry(for: currentDate))
         }
         
         // Set refresh policy to next scheduled time
@@ -120,6 +150,65 @@ struct VaniTimelineProvider: TimelineProvider {
         
         // Always call completion to prevent widget extension from hanging
         completion(timeline)
+    }
+    
+    /// Creates an entry from a verse without calling getCurrentVerse (prevents rotation advances)
+    private func createEntryFromVerse(verse: Verse, for date: Date, defaults: UserDefaults) -> VaniWidgetEntry {
+        // Read theme
+        let theme: AppTheme = {
+            guard let raw = defaults.string(forKey: AppConstants.UserDefaultsKeys.appTheme),
+                  let t = AppTheme(rawValue: raw) else { return .pureBlack }
+            return t
+        }()
+        
+        // Read widget display settings
+        let mediumMode: MediumWidgetMode = {
+            guard let raw = defaults.string(forKey: AppConstants.UserDefaultsKeys.mediumWidgetMode),
+                  let mode = MediumWidgetMode(rawValue: raw) else { return .transliteration }
+            return mode
+        }()
+        
+        let largeTop: LargeWidgetTop = {
+            guard let raw = defaults.string(forKey: AppConstants.UserDefaultsKeys.largeWidgetTop),
+                  let mode = LargeWidgetTop(rawValue: raw) else { return .sanskrit }
+            return mode
+        }()
+        
+        let largeBottom: LargeWidgetBottom = {
+            guard let raw = defaults.string(forKey: AppConstants.UserDefaultsKeys.largeWidgetBottom),
+                  let mode = LargeWidgetBottom(rawValue: raw) else { return .essence }
+            return mode
+        }()
+        
+        return VaniWidgetEntry(
+            date: date,
+            verse: verse,
+            mediumMode: mediumMode,
+            largeTop: largeTop,
+            largeBottom: largeBottom,
+            theme: theme,
+            hasError: false
+        )
+    }
+    
+    /// Creates an error entry
+    private func createErrorEntry(for date: Date) -> VaniWidgetEntry {
+        let defaults = AppConstants.sharedUserDefaults ?? UserDefaults.standard
+        let theme: AppTheme = {
+            guard let raw = defaults.string(forKey: AppConstants.UserDefaultsKeys.appTheme),
+                  let t = AppTheme(rawValue: raw) else { return .pureBlack }
+            return t
+        }()
+        
+        return VaniWidgetEntry(
+            date: date,
+            verse: nil,
+            mediumMode: .essence,
+            largeTop: .sanskrit,
+            largeBottom: .essence,
+            theme: theme,
+            hasError: true
+        )
     }
     
     private func createEntry(for date: Date) -> VaniWidgetEntry {
@@ -215,22 +304,51 @@ struct VaniTimelineProvider: TimelineProvider {
                     )
                 }
                 
-                // Use the synced verse from the app (set by VerseRotationManager)
-                // Widget always displays what the app has set
+                // CRITICAL: Optimize widget verse selection to prevent unnecessary rotation advances
+                // Strategy: Check slot key first, only call getCurrentVerse if slot actually changed
                 let verse: Verse?
-                if let currentId = currentVerseId,
-                   let savedVerse = VerseSelector.findVerse(byId: currentId, from: krishnaVerses) {
+                
+                // Calculate current slot key
+                let schedule: VerseSchedule = {
+                    guard let raw = defaults.string(forKey: AppConstants.UserDefaultsKeys.verseSchedule),
+                          let s = VerseSchedule(rawValue: raw) else { return .oncePerDay }
+                    return s
+                }()
+                
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyy-MM-dd"
+                let dateString = formatter.string(from: date)
+                let slotIndex = schedule.currentSlotIndex(for: date)
+                let currentSlotKey = "\(dateString)-\(slotIndex)"
+                
+                // Read saved slot key
+                let savedSlotKey = defaults.string(forKey: AppConstants.UserDefaultsKeys.lastScheduledSlot) ?? ""
+                
+                // If slot hasn't changed and we have a saved verse ID, use it directly
+                // This prevents unnecessary calls to getCurrentVerse which could cause advances
+                if savedSlotKey == currentSlotKey, let savedId = currentVerseId,
+                   let savedVerse = VerseSelector.findVerse(byId: savedId, from: krishnaVerses) {
+                    // Same slot, use saved verse - no need to call rotation manager
                     verse = savedVerse
                 } else {
-                    // Fallback: use rotation manager to get current verse
-                    // Use autoreleasepool for rotation manager as well
-                    let verseResult = autoreleasepool {
-                        let rotationManager = VerseRotationManager.forWidget()
-                        return rotationManager.getCurrentVerse(from: krishnaVerses, for: date)
-                    }
+                    // Slot changed or no saved verse - need to call rotation manager
+                    // This will handle slot changes and advance if needed
+                    let rotationManager = VerseRotationManager.forWidget()
+                    let verseResult = rotationManager.getCurrentVerse(from: krishnaVerses, for: date)
                     
-                    // Final fallback: use first verse if rotation manager fails
-                    verse = verseResult ?? krishnaVerses.first
+                    if let verseFromManager = verseResult {
+                        verse = verseFromManager
+                        // The rotation manager already saves the verse ID when it advances
+                    } else {
+                        // Fallback: try to use saved verse ID if rotation manager fails
+                        if let currentId = currentVerseId,
+                           let savedVerse = VerseSelector.findVerse(byId: currentId, from: krishnaVerses) {
+                            verse = savedVerse
+                        } else {
+                            // Final fallback: use first verse
+                            verse = krishnaVerses.first
+                        }
+                    }
                 }
                 
                 return VaniWidgetEntry(
@@ -333,12 +451,12 @@ struct MediumWidgetView: View {
                         
                         // Main content
                         mainContent(for: verse)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                             .multilineTextAlignment(.leading)
                         
                         Spacer(minLength: 0)
                     }
-                    .padding(10)
+                    .padding(8)
                 }
             }
             .containerBackground(
@@ -358,8 +476,9 @@ struct MediumWidgetView: View {
                 .font(.system(size: 17, weight: .regular, design: theme.fontDesign))
                 .foregroundStyle(theme.sanskritTextColor)
                 .lineSpacing(6)
-                .fixedSize(horizontal: false, vertical: true)
-                .minimumScaleFactor(0.75)
+                .lineLimit(4)
+                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: false)
             
         case .transliteration:
             Text(verse.transliteration)
@@ -367,16 +486,18 @@ struct MediumWidgetView: View {
                 .italic()
                 .foregroundStyle(theme.primaryTextColor.opacity(0.95))
                 .lineSpacing(5)
-                .fixedSize(horizontal: false, vertical: true)
-                .minimumScaleFactor(0.75)
+                .lineLimit(5)
+                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: false)
             
         case .essence:
             Text(personalizedText(for: verse))
                 .font(themedFont(size: 17, weight: theme.bodyFontWeight))
                 .foregroundStyle(theme.primaryTextColor.opacity(0.95))
                 .lineSpacing(6)
-                .fixedSize(horizontal: false, vertical: true)
-                .minimumScaleFactor(0.8)
+                .lineLimit(4)
+                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: false)
         }
     }
     
@@ -478,14 +599,8 @@ struct LargeWidgetView: View {
                         }
                         
                         Spacer(minLength: 0)
-                        
-                        // Key concepts at bottom
-                        if !verse.keyConcepts.isEmpty {
-                            conceptTags(for: verse)
-                                .padding(.top, 8)
-                        }
                     }
-                    .padding(10)
+                    .padding(8)
                 }
             }
             .containerBackground(
@@ -506,7 +621,7 @@ struct LargeWidgetView: View {
                 Text("Kṛṣṇa Vāṇī")
                     .font(.system(size: 24, weight: theme.titleFontWeight, design: theme.fontDesign))
                     .foregroundStyle(theme.accentColor)
-                Text("Daily Wisdom")
+                Text(chapterTransliteration(for: verse))
                     .font(.system(size: 10))
                     .foregroundStyle(theme.secondaryTextColor)
             }
@@ -514,7 +629,7 @@ struct LargeWidgetView: View {
             Spacer()
             
             VStack(alignment: .trailing, spacing: 2) {
-                Text("Bhagavad Gita")
+                Text("Bhagavad Gītā")
                     .font(.system(size: 10))
                     .foregroundStyle(theme.secondaryTextColor)
                 Text(verse.id)
@@ -522,6 +637,27 @@ struct LargeWidgetView: View {
                     .foregroundStyle(theme.accentColor)
             }
         }
+    }
+    
+    /// Gets the chapter transliteration for a verse
+    private func chapterTransliteration(for verse: Verse) -> String {
+        // Extract chapter number from verse ID (e.g., "15.5" -> 15)
+        guard let chapterNumber = Int(verse.id.split(separator: ".").first ?? "") else {
+            return "Daily Wisdom" // Fallback
+        }
+        
+        // Load data and get chapter
+        do {
+            let repository = BundleGitaRepository()
+            let data = try repository.loadData()
+            if let chapter = data.chapter(chapterNumber) {
+                return chapter.chapterNameTransliteration
+            }
+        } catch {
+            // If loading fails, return fallback
+        }
+        
+        return "Daily Wisdom" // Fallback
     }
     
     // MARK: - Key Concept Tags

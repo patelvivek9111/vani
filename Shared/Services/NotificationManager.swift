@@ -18,9 +18,9 @@ enum MindfulnessFrequency: String, CaseIterable, Codable {
     var displayName: String {
         switch self {
         case .off: return "Off"
-        case .onceDaily: return "Once Daily"
-        case .twiceDaily: return "Twice Daily"
-        case .thriceDaily: return "Three Times Daily"
+        case .onceDaily: return "1x daily"
+        case .twiceDaily: return "2x daily"
+        case .thriceDaily: return "3x daily"
         }
     }
     
