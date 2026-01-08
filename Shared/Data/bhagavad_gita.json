@@ -22,9 +22,9 @@
             "Partha",
             "Parantapa"
           ],
-          "translation_full": "O Parth, it does not befit you to yield to this unmanliness. Give up such petty weakness of heart and arise, O vanquisher of enemies.",
-          "widget_line": "O Partha, it does not suit you to give in to this weakness. Let go of this small-hearted fear and stand up with courage, O conqueror of enemies.",
-          "personalized": "O {name}, it does not suit you to give in to this weakness. Let go of this small-hearted fear and stand up with courage, O conqueror of enemies.",
+          "translation_full": "O Parth, yield not to cowardice. It does not suit you. Let go of this small-hearted weakness and stand up, O vanquisher of enemies.",
+          "widget_line": "O Parth, yield not to cowardice. It does not suit you. Let go of this small-hearted weakness and stand up, O vanquisher of enemies.",
+          "personalized": "O {name}, yield not to cowardice. It does not suit you. Let go of this small-hearted weakness and stand up, O vanquisher of enemies.",
           "key_concepts": [
             "courage",
             "strength",
@@ -39,7 +39,7 @@
           "transliteration": "śhrī bhagavān uvācha\naśhochyān-anvaśhochas-tvaṁ prajñā-vādānśh cha bhāṣhase\ngatāsūn-agatāsūnśh-cha nānuśhochanti paṇḍitāḥ",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "While you speak words of wisdom, you are mourning for that which is not worthy of grief. The wise lament neither for the living nor for the dead.",
+          "translation_full": "While you speak words of wisdom, you are mourning for that which is not worthy of grief. The wise grieve, neither for the living nor for the dead.",
           "widget_line": "You speak wise words, yet you are sad about things that don't deserve sadness. Wise people don't grieve for those who are alive or those who have passed away.",
           "key_concepts": [
             "wisdom",
@@ -90,9 +90,9 @@
             "Kaunteya",
             "Bharata"
           ],
-          "translation_full": "O son of Kunti, the contact between the senses and the sense objects gives rise to fleeting perceptions of happiness and distress. These are non-permanent, and come and go like the winter and summer seasons. O descendent of Bharat, one must learn to tolerate them without being disturbed.",
-          "widget_line": "O son of Kunti, when our senses touch things, we feel happiness and sadness. But these feelings don't last forever—they come and go like winter and summer seasons. O descendant of Bharat, learn to handle them calmly without getting upset.",
-          "personalized": "O {name}, when our senses touch things, we feel happiness and sadness. But these feelings don't last forever—they come and go like winter and summer seasons. Learn to handle them calmly without getting upset.",
+          "translation_full": "O son of Kunti, when our senses touch things, we feel happiness and sadness. But these feelings don't last forever—they come and go like winter and summer seasons. O descendant of Bharat, one must learn to remain unaffected by them or ignore them. ",
+          "widget_line": "O son of Kunti, when our senses touch things, we feel happiness and sadness. But these feelings don't last forever—they come and go like winter and summer seasons. O descendant of Bharat, one must learn to remain unaffected by them or ignore them.",
+          "personalized": "O {name}, when our senses touch things, we feel happiness and sadness. But these feelings don't last forever—they come and go like winter and summer seasons. One must learn to remain unaffected by them or ignore them.",
           "key_concepts": [
             "tolerance",
             "equanimity",
@@ -126,7 +126,7 @@
           "transliteration": "nāsato vidyate bhāvo nābhāvo vidyate sataḥ\nubhayorapi dṛiṣhṭo 'nta stvanayos tattva-darśhibhiḥ",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "Of the transient there is no endurance, and of the eternal there is no cessation. This has verily been observed and concluded by the seers of the Truth, after studying the nature of both.",
+          "translation_full": "Things that are temporary don't last, and things that are eternal never end. Wise people who have studied both have seen this truth clearly.",
           "widget_line": "Things that are temporary don't last, and things that are eternal never end. Wise people who have studied both have seen this truth clearly.",
           "key_concepts": [
             "reality",
@@ -142,7 +142,7 @@
           "transliteration": "avināśhi tu tadviddhi yena sarvam idaṁ tatam\nvināśham avyayasyāsya na kaśhchit kartum arhati",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "That which pervades the entire body, know it to be indestructible. No one can cause the destruction of the imperishable soul.",
+          "translation_full": "Know that the soul which is present everywhere in the body cannot be destroyed. Nothing and no one can destroy the eternal soul.",
           "widget_line": "Know that the soul which is present everywhere in the body cannot be destroyed. Nothing and no one can destroy the eternal soul.",
           "key_concepts": [
             "soul",
@@ -160,9 +160,9 @@
           "vocative_terms": [
             "Bharata"
           ],
-          "translation_full": "Only the material body is perishable; the embodied soul within is indestructible, immeasurable, and eternal. Therefore, fight, O descendent of Bharat.",
-          "widget_line": "The physical body will die and decay, but the soul living inside it cannot be destroyed, cannot be measured, and lives forever. So do your duty, O descendant of Bharat.",
-          "personalized": "O {name}, the physical body will die and decay, but the soul living inside it cannot be destroyed, cannot be measured, and lives forever. So do your duty.",
+          "translation_full": "The physical body will die and decay, but the soul living inside it cannot be destroyed, cannot be measured, and lives forever. Therefore, fight, O descendant of Bharat.",
+          "widget_line": "The physical body will die and decay, but the soul living inside it cannot be destroyed, cannot be measured, and lives forever. Therefore, fight, O descendant of Bharat.",
+          "personalized": "The physical body will die and decay, but the soul living inside it cannot be destroyed, cannot be measured, and lives forever. Therefore, fight, O {name}.",
           "key_concepts": [
             "soul",
             "duty",
@@ -178,7 +178,7 @@
           "has_vocative": false,
           "vocative_terms": [],
           "translation_full": "Neither of them is in knowledge—the one who thinks the soul can slay and the one who thinks the soul can be slain. For truly, the soul neither kills nor can it be killed.",
-          "widget_line": "Both are wrong—the person who thinks the soul can kill and the person who thinks the soul can be killed. The truth is, the soul cannot kill anyone, and the soul cannot be killed by anyone.",
+          "widget_line": "Neither of them is in knowledge—the one who thinks the soul can slay and the one who thinks the soul can be slain. For truly, the soul neither kills nor can it be killed.",
           "key_concepts": [
             "soul",
             "non_violence_true_level",
@@ -201,25 +201,7 @@
             "birth_and_death"
           ]
         },
-        {
-          "id": "2.21",
-          "verse_number": 21,
-          "speaker": "Krishna",
-          "sanskrit": "वेदाविनाशिनं नित्यं य एनमजमव्ययम् ।\nकथं स पुरुषः पार्थ कं घातयति हन्ति कम् ॥२१॥",
-          "transliteration": "vedāvināśhinaṁ nityaṁ ya enam ajam avyayam\nkathaṁ sa puruṣhaḥ pārtha kaṁ ghātayati hanti kam",
-          "has_vocative": true,
-          "vocative_terms": [
-            "Partha"
-          ],
-          "translation_full": "O Parth, how can one who knows the soul to be imperishable, eternal, unborn, and immutable kill anyone or cause anyone to kill?",
-          "widget_line": "O Partha, if someone truly understands that the soul cannot be destroyed, lives forever, was never born, and never changes, how can they kill anyone or make others kill?",
-          "personalized": "O {name}, if someone truly understands that the soul cannot be destroyed, lives forever, was never born, and never changes, how can they kill anyone or make others kill?",
-          "key_concepts": [
-            "soul",
-            "non_violence_true_level",
-            "knowledge"
-          ]
-        },
+
         {
           "id": "2.22",
           "verse_number": 22,
@@ -260,8 +242,8 @@
           "transliteration": "achchhedyo 'yam adāhyo 'yam akledyo 'śhoṣhya eva cha\nnityaḥ sarva-gataḥ sthāṇur achalo 'yaṁ sanātanaḥ",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "The soul is unbreakable and incombustible; it can neither be dampened nor dried. It is everlasting, in all places, unalterable, immutable, and primordial.",
-          "widget_line": "The soul cannot be broken, cannot be burned, cannot get wet, and cannot dry out. It lives forever, is everywhere, never changes, and has always existed.",
+          "translation_full": "The soul is unbreakable and incombustible; it can neither be dampened nor dried. t lives forever, is everywhere, never changes, and has always existed.",
+          "widget_line": "The soul is unbreakable and incombustible; it can neither be dampened nor dried. It lives forever, is everywhere, never changes, and has always existed.",
           "key_concepts": [
             "soul",
             "indestructible",
@@ -482,9 +464,9 @@
           "vocative_terms": [
             "Kaunteya"
           ],
-          "translation_full": "If you fight, you will either be slain on the battlefield and go to the celestial abodes, or you will gain victory and enjoy the kingdom on earth. Therefore arise with determination, O son of Kunti, and be prepared to fight.",
-          "widget_line": "If you fight and die in battle, you will go to heaven. If you fight and win, you will enjoy ruling the kingdom on earth. So stand up with strong determination, O son of Kunti, and get ready to fight.",
-          "personalized": "O {name}, if you fight and die in battle, you will go to heaven. If you fight and win, you will enjoy ruling the kingdom on earth. So stand up with strong determination and get ready to fight.",
+          "translation_full": "If you fight, you will either be killed on the battlefield and go to the celestial abodes, or you will gain victory and enjoy the kingdom on earth. Therefore arise with determination, O son of Kunti, and be prepared to fight.",
+          "widget_line": "If you fight, you will either be killed on the battlefield and go to the celestial abodes, or you will gain victory and enjoy the kingdom on earth. Therefore arise with determination, O son of Kunti, and be prepared to fight.",
+          "personalized": "If you fight, you will either be killed on the battlefield and go to the celestial abodes, or you will gain victory and enjoy the kingdom on earth. Therefore arise with determination, O {name}, and be prepared to fight.",
           "key_concepts": [
             "courage",
             "duty",
@@ -552,7 +534,7 @@
           "vocative_terms": [
             "Kurunandana"
           ],
-          "translation_full": "O descendent of the Kurus, the intellect of those who are on this path is resolute, and their aim is one-pointed. But the intellect of those who are irresolute is many-branched.",
+          "translation_full": "O descendant of the Kurus, the intellect of those who are on this path is resolute, and their aim is one-pointed. But the intellect of those who are irresolute is many-branched.",
           "widget_line": "O descendant of the Kurus, people who follow this path have strong, determined minds and focus on one goal. But people who are not determined have minds that go in many different directions.",
           "personalized": "O {name}, people who follow this path have strong, determined minds and focus on one goal. But people who are not determined have minds that go in many different directions.",
           "key_concepts": [
@@ -571,9 +553,9 @@
           "vocative_terms": [
             "Partha"
           ],
-          "translation_full": "Those with limited understanding, get attracted to the flowery words of the Vedas, which advocate ostentatious rituals for elevation to the celestial abodes, and presume no higher principle is described in them. They glorify only those portions of the Vedas that please their senses, and perform pompous ritualistic ceremonies for attaining high birth, opulence, sensual enjoyment, and elevation to the heavenly planets.",
-          "widget_line": "People who don't understand deeply are drawn to beautiful-sounding words in the Vedas about ceremonies. They only like parts that make them feel good, and do big ceremonies hoping for wealth, pleasures, and heaven.",
-          "personalized": "O {name}, people who don't understand deeply are drawn to the beautiful-sounding words in the Vedas about ceremonies and going to heaven. They think nothing more important exists. They only like the parts that make them feel good, and they do big ceremonies hoping to be born rich, have lots of things, enjoy pleasures, and go to heaven.",
+          "translation_full": "O Arjuna, those who are obsessed by desires, who look upon heaven as the supreme goal and argue that there is nothing beyond heaven and pleasures and who are devoted to the letter of the Vedas, are unwise. They make this type of flowery speeches recommending many acts of various kinds, for the attainment of pleasure and prosperity, and with rebirth as their fruit.",
+          "widget_line": "O Arjuna, those who are obsessed by desires, who look upon heaven as the supreme goal and argue that there is nothing beyond heaven and pleasures and who are devoted to the letter of the Vedas, are unwise. They make flowery speeches recommending many acts of various kinds, for the attainment of pleasure and prosperity, and with rebirth as their fruit.",
+          "personalized": "O {name}, those who are obsessed by desires, who look upon heaven as the supreme goal and argue that there is nothing beyond heaven and pleasures and who are devoted to the letter of the Vedas, are unwise. They make flowery speeches recommending many acts of various kinds, for the attainment of pleasure and prosperity, and with rebirth as their fruit.",
           "key_concepts": [
             "ritualism",
             "limited_vision",
@@ -588,8 +570,8 @@
           "transliteration": "bhogaiśwvarya-prasaktānāṁ tayāpahṛita-chetasām\nvyavasāyātmikā buddhiḥ samādhau na vidhīyate",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "With their minds deeply attached to worldly pleasures and their intellects bewildered by such things, they are unable to possess the resolute determination for success on the path to God.",
-          "widget_line": "People who are very attached to having fun and being rich, and whose minds are confused by these things, cannot develop the strong determination needed to succeed on the path to God.",
+          "translation_full": "Those, whose minds are carried away by such flowery words (who are attracted towards pleasures and who are deeeply attached to pleasure and prosperity), cannot attain the determinate intellect, concentrated in God.",
+          "widget_line": "Those whose minds are carried away by such flowery words, who are attracted towards pleasures and deeply attached to pleasure and prosperity, cannot attain the determinate intellect, concentrated in God.",
           "key_concepts": [
             "attachment",
             "meditation",
@@ -606,9 +588,9 @@
           "vocative_terms": [
             "Arjuna"
           ],
-          "translation_full": "The Vedas deal with the three modes of material nature, O Arjun. Rise above the three modes to a state of pure spiritual consciousness. Freeing yourself from dualities, eternally fixed in Truth, and without concern for material gain and safety, be situated in the self.",
-          "widget_line": "O Arjuna, the Vedas talk about the three qualities of material nature. Go beyond these to reach a pure spiritual state. Free yourself from seeing things as good or bad, stay connected to truth, and rest in your true self.",
-          "personalized": "O {name}, the Vedas talk about the three qualities of material nature. Go beyond these three qualities to reach a pure spiritual state. Free yourself from seeing things as good or bad, always stay connected to the truth, don't worry about getting things or staying safe, and rest in your true self.",
+          "translation_full": "O Arjuna, the Vedas deal with the threee Gunas (attributes) and their evolutes. Be free from those attributes, rise above the polarity of opposites, remain balanced, be unconcerned abouth the meeting of wants and preservation, of what has been already attained and get established in the self.",
+          "widget_line": "O Arjuna, the Vedas deal with the three Gunas and their evolutes. Be free from those attributes, rise above the polarity of opposites, remain balanced, be unconcerned about the meeting of wants and preservation, and get established in the self.",
+          "personalized": "O {name}, the Vedas deal with the three Gunas and their evolutes. Be free from those attributes, rise above the polarity of opposites, remain balanced, be unconcerned about the meeting of wants and preservation, and get established in the self.",
           "key_concepts": [
             "transcendence",
             "three_gunas",
@@ -624,7 +606,7 @@
           "has_vocative": false,
           "vocative_terms": [],
           "translation_full": "Whatever purpose is served by a small well of water is naturally served in all respects by a large lake. Similarly, one who realizes the Absolute Truth also fulfills the purpose of all the Vedas.",
-          "widget_line": "Just like a small well of water can do everything you need when there's a big flood covering everything, in the same way, someone who truly knows the Self has already achieved everything that all the Vedas teach.",
+          "widget_line": "Whatever purpose is served by a small well of water is naturally served in all respects by a large lake. Similarly, one who realizes the Absolute Truth also fulfills the purpose of all the Vedas.",
           "key_concepts": [
             "self_knowledge",
             "scriptures",
@@ -639,8 +621,8 @@
           "transliteration": "karmaṇy-evādhikāras te mā phaleṣhu kadāchana\nmā karma-phala-hetur bhūr mā te saṅgo 'stvakarmaṇi",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions. Never consider yourself to be the cause of the results of your activities, nor be attached to inaction.",
-          "widget_line": "You have the right to do your duty, but you don't have the right to the results of what you do. Don't do things just to get rewards, and don't think you are the one who makes things happen. But also don't just sit around doing nothing.",
+          "translation_full": "Your right is only to perform your duty, but never to claim its fruit. Do not be the cause of the fruit of action nor let your attachement be for inaction.",
+          "widget_line": "Your right is only to perform your duty, but never to claim its fruit. Do not be the cause of the fruit of action nor let your attachment be for inaction.",
           "key_concepts": [
             "karma_yoga",
             "detachment",
@@ -657,9 +639,9 @@
           "vocative_terms": [
             "Dhananjaya"
           ],
-          "translation_full": "Be steadfast in the performance of your duty, O Arjun, abandoning attachment to success and failure. Such equanimity is called Yog.",
-          "widget_line": "Do your duties with a steady mind, O Dhananjaya, and treat success and failure the same way. This calm balance is called yoga.",
-          "personalized": "O {name}, do your duties with a steady mind, and treat success and failure the same way. This calm balance is called yoga.",
+          "translation_full": "O Dhananjaya, perform actions (duties) being steadfat in the path of Yoga, renouncing attachment, having become even-minded in success and failure; and that equanimity (equilibrium) is called Yoga.",
+          "widget_line": "O Dhananjaya, perform actions being steadfast in the path of Yoga, renouncing attachment, having become even-minded in success and failure; and that equanimity is called Yoga.",
+          "personalized": "O {name}, perform actions being steadfast in the path of Yoga, renouncing attachment, having become even-minded in success and failure; and that equanimity is called Yoga.",
           "key_concepts": [
             "karma_yoga",
             "equanimity",
@@ -676,9 +658,9 @@
           "vocative_terms": [
             "Dhananjaya"
           ],
-          "translation_full": "Seek refuge in divine knowledge and insight, O Arjun, and discard reward-seeking actions that are certainly inferior to works performed with the intellect established in divine knowledge. Miserly are those who seek to enjoy the fruits of their works.",
-          "widget_line": "O Dhananjaya, work done just to get rewards is much worse than work done with wisdom. Find safety and peace in understanding, not in what you get from your work. People who only work to enjoy the results are being selfish.",
-          "personalized": "O {name}, work done just to get rewards is much worse than work done with wisdom. Find safety and peace in understanding, not in what you get from your work. People who only work to enjoy the results are being selfish.",
+          "translation_full": "O Dhananjaya, action with a selfish motive is far inferior to that performed with calmness of mind. Seek refuge in this evenness of mind, for low are those who crave for fruit of action.",
+          "widget_line": "O Dhananjaya, action with a selfish motive is far inferior to that performed with calmness of mind. Seek refuge in this evenness of mind, for low are those who crave for fruit of action.",
+          "personalized": "O {name}, action with a selfish motive is far inferior to that performed with calmness of mind. Seek refuge in this evenness of mind, for low are those who crave for fruit of action.",
           "key_concepts": [
             "karma_yoga",
             "detachment",
@@ -693,7 +675,7 @@
           "transliteration": "buddhi-yukto jahātīha ubhe sukṛita-duṣhkṛite\ntasmād yogāya yujyasva yogaḥ karmasu kauśhalam",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "One who prudently practices the science of work without attachment can get rid of both good and bad reactions in this life itself. Therefore, strive for Yog, which is the art of working skillfully (in proper consciousness).",
+          "translation_full": "A wise person who works without being attached can get free from both good and bad results in this very life. So work on yoga, which means doing your work skillfully with the right understanding.",
           "widget_line": "A wise person who works without being attached can get free from both good and bad results in this very life. So work on yoga, which means doing your work skillfully with the right understanding.",
           "key_concepts": [
             "karma_yoga",
@@ -709,8 +691,8 @@
           "transliteration": "karma-jaṁ buddhi-yuktā hi phalaṁ tyaktvā manīṣhiṇaḥ\njanma-bandha-vinirmuktāḥ padaṁ gachchhanty-anāmayam",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "The wise endowed with equanimity of intellect, abandon attachment to the fruits of actions, which bind one to the cycle of life and death. By working in such consciousness, they attain the state beyond all suffering.",
-          "widget_line": "Wise people who stay calm and balanced give up caring about the results of their work. This frees them from being born and dying again and again, and they reach a place where there is no more suffering.",
+          "translation_full": "As wise men endowed with equanimity, renounce the fruits of actions, they also freed from the shackles of births and attain the blissful supreme state.",
+          "widget_line": "As wise men endowed with equanimity, renounce the fruits of actions, they are also freed from the shackles of births and attain the blissful supreme state.",
           "key_concepts": [
             "liberation",
             "karma_yoga",
@@ -725,7 +707,7 @@
           "transliteration": "yadā te moha-kalilaṁ buddhir vyatitariṣhyati\ntadā gantāsi nirvedaṁ śhrotavyasya śhrutasya cha",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "When your intellect crosses the quagmire of delusion, you will then acquire indifference to what has been heard and what is yet to be heard (about enjoyments in this world and the next).",
+          "translation_full": "When your understanding gets past the confusing maze of wrong ideas, you will stop caring about things you've heard about or things you might hear about enjoying pleasures in this world or the next world.",
           "widget_line": "When your understanding gets past the confusing maze of wrong ideas, you will stop caring about things you've heard about or things you might hear about enjoying pleasures in this world or the next world.",
           "key_concepts": [
             "clarity",
@@ -741,8 +723,8 @@
           "transliteration": "śhruti-vipratipannā te yadā sthāsyati niśhchalā\nsamādhāv-achalā buddhis tadā yogam avāpsyasi",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "When your intellect ceases to be allured by the fruitive sections of the Vedas and remains steadfast in divine consciousness, you will then attain the state of perfect Yog.",
-          "widget_line": "When your mind stops being attracted to the parts of the Vedas that promise rewards, and instead stays steady in divine understanding, you will reach the perfect state of yoga.",
+          "translation_full": "When your mind stops being attracted to the parts of the Vedas that promise rewards, and instead stays steady in divine understanding, you will then attain Self-realization or union, with God.",
+          "widget_line": "When your mind stops being attracted to the parts of the Vedas that promise rewards, and instead stays steady in divine understanding, you will then attain Self-realization or union with God.",
           "key_concepts": [
             "samadhi",
             "steadiness",
@@ -759,9 +741,9 @@
           "vocative_terms": [
             "Partha"
           ],
-          "translation_full": "O Parth, when one discards all selfish desires and cravings of the senses that torment the mind, and becomes satisfied in the realization of the self, such a person is said to be transcendentally situated.",
-          "widget_line": "O Partha, when someone gives up all their selfish wants and the cravings of their senses that make their mind unhappy, and instead becomes happy just by knowing their true self, that person is said to have steady wisdom.",
-          "personalized": "O {name}, when someone gives up all their selfish wants and the cravings of their senses that make their mind unhappy, and instead becomes happy just by knowing their true self, that person is said to have steady wisdom.",
+          "translation_full": "O Parth, when one discards all selfish desires visiting the mind, and is self-satisfied in own self, he is said to be stable, in the wisdom.",
+          "widget_line": "O Parth, when one discards all selfish desires visiting the mind, and is self-satisfied in own self, he is said to be stable in the wisdom.",
+          "personalized": "O {name}, when one discards all selfish desires visiting the mind, and is self-satisfied in own self, he is said to be stable in the wisdom.",
           "key_concepts": [
             "desirelessness",
             "self_satisfaction",
@@ -776,8 +758,8 @@
           "transliteration": "duḥkheṣhv-anudvigna-manāḥ sukheṣhu vigata-spṛihaḥ\nvīta-rāga-bhaya-krodhaḥ sthita-dhīr munir uchyate",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "One whose mind remains undisturbed amidst misery, who does not crave for pleasure, and who is free from attachment, fear, and anger, is called a sage of steady wisdom.",
-          "widget_line": "A person whose mind stays calm when there is sadness, who doesn't want more when there is happiness, and who is free from being attached to things, free from fear, and free from anger, is called a wise person with a steady mind.",
+          "translation_full": "One whose mind remains undisturbed in sorrow, who does not crave for pleasure, and who is free from passioin, fear and anger is called aa sage with stable wisdom.",
+          "widget_line": "One whose mind remains undisturbed in sorrow, who does not crave for pleasure, and who is free from passion, fear and anger is called a sage with stable wisdom.",
           "key_concepts": [
             "equanimity",
             "fearlessness",
@@ -792,8 +774,8 @@
           "transliteration": "yaḥ sarvatrānabhisnehas tat tat prāpya śhubhāśhubham\nnābhinandati na dveṣhṭi tasya prajñā pratiṣhṭhitā",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "One who remains unattached under all conditions, and is neither delighted by good fortune nor dejected by tribulation, he is a sage with perfect knowledge.",
-          "widget_line": "A person who doesn't get attached to anything, and who doesn't get too happy when good things happen or too sad when bad things happen, is a wise person with perfect understanding.",
+          "translation_full": "One who remains unattached under all conditions, and is neither delighted by good, nor dejected with evil, is stable in wisdom.",
+          "widget_line": "One who remains unattached under all conditions, and is neither delighted by good, nor dejected with evil, is stable in wisdom.",
           "key_concepts": [
             "non_attachment",
             "equanimity",
@@ -808,7 +790,7 @@
           "transliteration": "yadā sanharate chāyaṁ kūrmo 'ṅgānīva sarvaśhaḥ\nindriyāṇīndriyārthebhyas tasya prajñā pratiṣhṭhitā",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "One who is able to withdraw the senses from their objects, just as a tortoise withdraws its limbs into its shell, is established in divine wisdom.",
+          "translation_full": "A person who can pull their senses away from things they want, just like a tortoise pulls its legs and head into its shell, has their mind firmly set in divine wisdom.",
           "widget_line": "A person who can pull their senses away from things they want, just like a tortoise pulls its legs and head into its shell, has their mind firmly set in divine wisdom.",
           "key_concepts": [
             "sense_control",
@@ -1040,9 +1022,9 @@
           "vocative_terms": [
             "Partha"
           ],
-          "translation_full": "O Parth, such is the state of an enlightened soul that having attained it, one is never again deluded. Being established in this consciousness even at the hour of death, one is liberated from the cycle of life and death and reaches the Supreme Abode of God.",
-          "widget_line": "O Partha, this is the state of being one with the Supreme. Once you reach it, you are never confused again. If you stay in this state even when you die, you are freed from being born and dying again and again, and you reach God's highest home.",
-          "personalized": "O {name}, this is the state of being one with the Supreme. Once you reach it, you are never confused again. If you stay in this state even when you die, you are freed from being born and dying again and again, and you reach God's highest home.",
+          "translation_full": "O Partha, this is the state of being one with the Supreme. Once you reach it, you are never confused again. If you stay in this state even when you die, you are freed from being born and dying again and again, and you attain brahmic bliss (identification with the absoulte state).",
+          "widget_line": "O Partha, this is the state of being one with the Supreme. Once you reach it, you are never confused again. If you stay in this state even when you die, you are freed from being born and dying again and again, and you attain brahmic bliss.",
+          "personalized": "O {name}, this is the state of being one with the Supreme. Once you reach it, you are never confused again. If you stay in this state even when you die, you are freed from being born and dying again and again, and you attain brahmic bliss.",
           "key_concepts": [
             "brahmi_sthiti",
             "liberation",
@@ -2108,8 +2090,8 @@
           "transliteration": "gata-saṅgasya muktasya jñānāvasthita-chetasaḥ\nyajñāyācharataḥ karma samagraṁ pravilīyate",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "They are released from the bondage of material attachments and their intellect is established in divine knowledge. Since they perform all actions as a sacrifice (to God), they are freed from all karmic reactions.",
-          "widget_line": "They are free from being trapped by material attachments, and their mind is set in divine knowledge. Because they do all their actions as an offering to God, they are freed from all the results of their work.",
+          "translation_full": "All action of a man, who is devoid of attachement, who is librated, whose mind is established in knowledge of the self, who works for the sake of sacrifice (yajna) are destroyed.",
+          "widget_line": "All action of a man, who is devoid of attachment, who is liberated, whose mind is established in knowledge of the self, who works for the sake of sacrifice (yajna) are destroyed.",
           "key_concepts": [
             "transcendence",
             "knowledge",
@@ -4044,8 +4026,8 @@
           "transliteration": "avyaktaṁ vyaktim āpannaṁ manyante mām abuddhayaḥ\nparaṁ bhāvam ajānanto mamāvyayam anuttamam",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "Unintelligent men, who do not know Me perfectly, think that I, the Supreme Personality of Godhead, Krishna, was impersonal before and have now assumed this personality. Due to their small knowledge, they do not know My higher nature, which is imperishable and supreme.",
-          "widget_line": "People who don't know Me think I was formless before and now have a form. They don't know My true nature, which is eternal and supreme.",
+          "translation_full": "One who don't know Me well think I was formless before and now have a form. Because they know so little, they don't understand My true nature, which is eternal and supreme.",
+          "widget_line": "One who don't know Me well think I was formless before and now have a form. Because they know so little, they don't understand My true nature, which is eternal and supreme.",
           "key_concepts": [
             "ignorance",
             "divine_nature",
@@ -4192,8 +4174,8 @@
           "transliteration": "adhibhūtaṁ kṣharo bhāvaḥ puruṣhaśh chādhidaivatam\nadhiyajño 'ham evātra dehe deha-bhṛitāṁ vara",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "O best of the embodied souls, the physical manifestation that is constantly changing is called adhibhūta; the universal form of God, which presides over the celestial gods in this creation, is called Adhidaiva; I, who dwell in the heart of every living being, am called Adhiyajna, or the Lord of all sacrifices.",
-          "widget_line": "O best of beings, the changing physical world is adhibhuta. The universal form of God is adhidaiva. I, who live in everyone's heart, am adhiyajna, the Lord of all.",
+          "translation_full": "O best of the embodied souls, the changing physical world is called adhibhuta. The universal form of God that rules over the gods in this world is called adhidaiva. I, who live in everyone's heart, am called adhiyajna, the Lord of all offerings.",
+          "widget_line": "O best of the embodied souls, the changing physical world is called adhibhuta. The universal form of God that rules over the gods in this world is called adhidaiva. I, who live in everyone's heart, am called adhiyajna, the Lord of all offerings.",
           "key_concepts": [
             "material_nature",
             "divine_form",
@@ -4310,8 +4292,8 @@
           "transliteration": "yad akṣharaṁ veda-vido vadanti viśhanti yad yatayo vīta-rāgāḥ\nyad ichchhanto brahmacharyaṁ charanti tat te padaṁ saṅgraheṇa pravakṣhye",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "Scholars of the Vedas describe Him as Imperishable; great ascetics practice the vow of celibacy and renounce worldly pleasures to enter into Him. I shall now explain to you briefly the path to that goal.",
-          "widget_line": "Vedic scholars call Him the Imperishable. Great sages practice celibacy and give up worldly pleasures to reach Him. I will now briefly explain this path.",
+          "translation_full": "I will now briefly explain this path to you. People who study the Vedas call Him the One who never dies. Great sages practice staying pure and give up worldly pleasures to reach Him. ",
+          "widget_line": "I will now briefly explain this path to you. People who study the Vedas call Him the One who never dies. Great sages practice staying pure and give up worldly pleasures to reach Him.",
           "key_concepts": [
             "brahman",
             "vedas",
@@ -4464,8 +4446,8 @@
           "transliteration": "paras tasmāt tu bhāvo 'nyo 'vyakto 'vyaktāt sanātanaḥ\nyaḥ sa sarveṣhu bhūteṣhu naśhyatsu na vinaśhyati",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "Yet there is another unmanifest nature, which is eternal and is transcendental to this manifested and unmanifested matter. It is supreme and is never annihilated. When all in this world is annihilated, that part remains as it is.",
-          "widget_line": "But there is another eternal nature beyond this world. It is supreme and never destroyed. When everything else disappears, it remains forever.",
+          "translation_full": "Beyond this unmanifiest ( Brahama's subtle body), there is yet another unmanifiested Eternal Existence, which does not perish, even though all beings perish.",
+          "widget_line": "Beyond this unmanifest (Brahma's subtle body), there is yet another unmanifested Eternal Existence, which does not perish, even though all beings perish.",
           "key_concepts": [
             "transcendence",
             "eternal",
@@ -4481,7 +4463,7 @@
           "has_vocative": false,
           "vocative_terms": [],
           "translation_full": "That unmanifest dimension is the supreme goal, and upon reaching it, one never returns to this mortal world. That is My Supreme Abode.",
-          "widget_line": "That eternal, unmanifest place is the supreme goal. Once you reach it, you never return to this world. That is My supreme abode.",
+          "widget_line": "That unmanifest dimension is the supreme goal, and upon reaching it, one never returns to this mortal world. That is My Supreme Abode.",
           "key_concepts": [
             "supreme_abode",
             "liberation",
@@ -4819,8 +4801,8 @@
           "transliteration": "moghāśhā mogha-karmāṇo mogha-jñānā vichetasaḥ\nrākṣhasīm āsurīṁ caiva prakṛitiṁ mohinīṁ śhritāḥ",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "Those who are thus bewildered are attracted by demonic and atheistic views. In that deluded condition, their hopes for liberation, their fruitive activities, and their culture of knowledge are all defeated.",
-          "widget_line": "These confused people are drawn to wrong and godless ideas. In their confusion, their hopes for freedom, their actions, and their learning all fail.",
+          "translation_full": "Those who are thus confused are attracted by demonic and atheistic views. In that deluded condition, their hopes for liberation, their fruitive activities, and their culture of knowledge are all defeated.",
+          "widget_line": "Those who are thus confused are attracted by demonic and atheistic views. In that deluded condition, their hopes for liberation, their fruitive activities, and their culture of knowledge are all defeated.",
           "key_concepts": [
             "delusion",
             "atheism",
@@ -6089,12 +6071,12 @@
           "id": "12.3",
           "verse_number": 3,
           "speaker": "Krishna",
-          "sanskrit": "ये त्वक्षरमनिर्देश्यमव्यक्तं पर्युपासते ।\nसर्वत्रगमचिन्त्यं च कूटस्थमचलं ध्रुवम् ॥३॥",
+          "sanskrit": "ये त्वक्षरमनिर्देश्यमव्यक्तं पर्युपासते ।\nसर्वत्रगमचिन्त्यं च कूटस्थमचलं ध्रुवम् ॥३॥\nसन्नियम्येन्द्रियग्रामं सर्वत्र समबुद्धयः ।\nते प्राप्नुवन्ति मामेव सर्वभूतहिते रताः ॥४॥",
           "transliteration": "ye tv akṣharam anirdeśhyam avyaktaṁ paryupāsate\nsarvatra-gam achintyaṁ cha kūṭa-stham achalaṁ dhruvam",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "But those who worship the formless aspect of the Absolute Truth—the imperishable, the indefinable, the unmanifest, the all-pervading, the unthinkable, the unchanging, the eternal, and the immoveable—",
-          "widget_line": "Those who worship the unmanifest, imperishable, all-pervading formless aspect—",
+          "translation_full": "Some people worship God without a form. They believe God cannot be destroyed, cannot be clearly described, cannot be seen, is everywhere, cannot be fully understood, never changes, lives forever, and never moves. By controlling their senses, staying calm in all situations, and caring about the good of everyone, these people also reach Me.",
+          "widget_line": "Some people worship God without a form. They believe God cannot be destroyed, cannot be clearly described, cannot be seen, is everywhere, cannot be fully understood, never changes, lives forever, and never moves. By controlling their senses, staying calm in all situations, and caring about the good of everyone, these people also reach Me.",
           "key_concepts": [
             "formless",
             "imperishable",
@@ -6125,8 +6107,8 @@
           "transliteration": "kleśho 'dhikataras teṣhām avyaktāsakta-chetasām\navyaktā hi gatir duḥkhaṁ dehavadbhir avāpyate",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "For those whose minds are attached to the unmanifest, the path of realization is full of tribulations. Worship of the unmanifest is exceedingly difficult for embodied beings.",
-          "widget_line": "The path of the unmanifest is full of tribulations and difficult for embodied beings.",
+          "translation_full": "The difficulty in following their discipline of those whose minds are attached to the unmanifest is greater, for the unmanifest is hard to reach, by the body-conscious beings.",
+          "widget_line": "The difficulty in following their discipline of those whose minds are attached to the unmanifest is greater, for the unmanifest is hard to reach by the body-conscious beings.",
           "key_concepts": [
             "difficulty",
             "unmanifest",
@@ -6467,8 +6449,8 @@
           "transliteration": "ichchhā dveṣhaḥ sukhaṁ duḥkhaṁ saṅghātaśh chetanā dhṛitiḥ\netat kṣhetraṁ samāsena sa-vikāram udāhṛitam",
           "has_vocative": false,
           "vocative_terms": [],
-          "translation_full": "The field of activities is composed of the five great elements, the ego, the intellect, the unmanifest primordial matter, the eleven senses (five knowledge senses, five working senses, and mind), and the five objects of the senses.",
-          "widget_line": "Desire, hatred, happiness, sadness, consciousness, and strength—these are the changes in the field.",
+          "translation_full": "The field of activities is composed of the five great elements, the ego, the intellect, the unmanifest original matter, the eleven senses (five knowledge senses, five working senses, and mind), and the five objects of the senses.",
+          "widget_line": "The field of activities is composed of the five great elements, the ego, the intellect, the unmanifest original matter, the eleven senses (five knowledge senses, five working senses, and mind), and the five objects of the senses.",
           "key_concepts": [
             "field",
             "modifications",
